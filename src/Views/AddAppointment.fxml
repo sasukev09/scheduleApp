@@ -122,13 +122,13 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="10">
                      <children>
-                        <ComboBox fx:id="customerID_cbox" onAction="#onActionSetCustomerTextField" prefWidth="70.0" />
+                        <ComboBox fx:id="customerID_cbox" onAction="#onActionCustomerCbox" prefWidth="70.0" />
                         <TextField fx:id="customerName_txtfield" disable="true" editable="false" prefHeight="25.0" prefWidth="230.0" promptText="Select Customer ID " />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="11">
                      <children>
-                        <ComboBox fx:id="userID_cbox" onAction="#onActionSetUserTextField" prefWidth="70.0" />
+                        <ComboBox fx:id="userID_cbox" onAction="#onActionUserCbox" prefWidth="70.0" />
                         <TextField fx:id="userName_txtfield" disable="true" editable="false" prefHeight="25.0" prefWidth="230.0" promptText="Select User ID " />
                      </children>
                   </HBox>

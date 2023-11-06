@@ -1,7 +1,7 @@
 package Controller;
 
 import DAO.DBAppointments;
-import Utility.TimeTraveller;
+import Utility.Tiempo;
 import DAO.DBContacts;
 import DAO.DBCustomers;
 import DAO.DBUsers;
@@ -82,23 +82,23 @@ public class AddAppointmentScreenController implements Initializable {
     private TextField userName_txtfield;
 
     /**
-     * This method takes the user input from dropDownCustomer combobox, updates textFieldCustomerName with name of customer.
+     * This method takes the user input from customerID_cbox combobox, updates customerName_txtfield with name of customer.
      * A list of all customers in the database is created and searched for a Customer object matching the Customer ID number via a for loop.
-     * @param actionEvent Executes when the user selects a Customer ID from the dropDownCustomer combobox.
+     * @param actionEvent Executes when the user selects a Customer ID from the customerID_cbox combobox.
      */
     @FXML
-    void onActionSetCustomerTextField(ActionEvent actionEvent)
+    void onActionCustomerCbox(ActionEvent actionEvent)
     {
-        ObservableList<Customer> allCustomers = DBCustomers.getAllCustomers();
+        ObservableList<Customer> allExistingCustomers = DBCustomers.getAllCustomers();
 
         int customerID = Integer.parseInt(customerID_cbox.getSelectionModel().getSelectedItem());
         String customerName = "";
 
-        for (Customer c : allCustomers)
+        for (Customer client : allExistingCustomers)
         {
-            if (customerID == c.getCustomerID())
+            if (customerID == client.getCustomerID())
             {
-                customerName = c.getCustomerName();
+                customerName = client.getCustomerName();
             }
         }
 
@@ -106,23 +106,23 @@ public class AddAppointmentScreenController implements Initializable {
     }
 
     /**
-     * This method takes the user input from dropDownUser combobox, updates textFieldUserName with name of user.
+     * This method takes the user input from userID_cbox combobox, updates userName_txtfield with name of user.
      * A list of all users in the database is created and searched for a User object matching the User ID number via a for loop.
-     * @param actionEvent Executes when the user selects a User ID from the dropDownUser combobox.
+     * @param actionEvent Executes when the user selects a User ID from the userID_cbox combobox.
      */
     @FXML
-    void onActionSetUserTextField(ActionEvent actionEvent)
+    void onActionUserCbox(ActionEvent actionEvent)
     {
-        ObservableList<User> allUsers = DBUsers.getAllUsers();
+        ObservableList<User> allExistingUsers = DBUsers.getAllUsers();
 
         int userID = Integer.parseInt(userID_cbox.getSelectionModel().getSelectedItem());
         String userName = "";
 
-        for (User u : allUsers)
+        for (User Usuario : allExistingUsers)
         {
-            if (userID == u.getUserID())
+            if (userID == Usuario.getUserID())
             {
-                userName = u.getUserName();
+                userName = Usuario.getUserName();
             }
         }
 
@@ -140,12 +140,12 @@ public class AddAppointmentScreenController implements Initializable {
      */
     @FXML
     void onActionAddButton(ActionEvent event) throws SQLException, IOException {
-        System.out.println("Adding new appointment");
+        System.out.println("New appointment added");
 
-        boolean isNewAppointment = true;
+        boolean newAppointment = true;
 
-        DateTimeFormatter hourMinFormatter = DateTimeFormatter.ofPattern("HH:mm");      //  this is in convertStringTimeDate2UTCTimeStamp
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyy-MM-dd");
+        DateTimeFormatter hourMinute = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter dateMonthDay = DateTimeFormatter.ofPattern("yyy-MM-dd");
 
         String title = title_txtfield.getText();
         String description = desc_txtfield.getText();
@@ -155,57 +155,57 @@ public class AddAppointmentScreenController implements Initializable {
         int customerID = Integer.parseInt(customerID_cbox.getValue());
         int userID = Integer.parseInt(userID_cbox.getValue());
 
-        //  get customer from database
+        //get customer from database
         Customer customer = DBCustomers.getCustomer(customerID);
 
-        //  get contact ID from contact string
-        ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+        //get contact ID from contact string
+        ObservableList<Contact> allExistingContacts = DBContacts.getAllContacts();
         int contactID = 0;
 
-        for (Contact c : allContacts)
+        for (Contact contacto : allExistingContacts)
         {
-            if (c.getContactName().equals(contact))
+            if (contacto.getContactName().equals(contact))
             {
-                contactID = c.getContactID();
+                contactID = contacto.getContactID();
             }
         }
 
-        //   >>---------->  start/end time   <----------<<                                  *** String?
+        //getting start/end dates from combo boxes
         String startTime = starttime_cbox.getValue();
         String endTime = endtime_cbox.getValue();
 
-        //   >>---------->   start/end date   <----------<<                                  *** String?
-        String startDate = start_datepick.getValue().format(dateFormatter);
-        String endDate = end_datepick.getValue().format(dateFormatter);
+        //getting start/end dates from date pickers
+        String startDate = start_datepick.getValue().format(dateMonthDay);
+        String endDate = end_datepick.getValue().format(dateMonthDay);
 
-        //   >>---------->   convert to Timestamp   <----------<<
-        Timestamp startTS = TimeTraveller.convertStringTimeDate2TimeStamp(startTime, startDate);
-        Timestamp endTS = TimeTraveller.convertStringTimeDate2TimeStamp(endTime, endDate);
+        //converting
+        Timestamp startTimeStamp = Tiempo.convertStringTimeDate2TimeStamp(startTime, startDate);
+        Timestamp endTimeStamp = Tiempo.convertStringTimeDate2TimeStamp(endTime, endDate);
 
-        //   -----------------------------   Test input data   ---------------------------------------
-//        System.out.println(title);
-//        System.out.println(description);
-//        System.out.println(location);
-//        System.out.println(contactID);
-//        System.out.println(type);
-//        System.out.println(startTime);
-//        System.out.println(endTime);
-//        System.out.println(startDate);
-//        System.out.println(endDate);
-//        System.out.println(customerID);
-//        System.out.println(userID);
+        //Testing
+    //System.out.println(title);
+    //System.out.println(description);
+    //System.out.println(location);
+    //System.out.println(contactID);
+    //System.out.println(type);
+    //System.out.println(startTime);
+    //System.out.println(endTime);
+    //System.out.println(startDate);
+    //System.out.println(endDate);
+    //System.out.println(customerID);
+    //System.out.println(userID);
 
 
-        //   >>---------->   convert Timestamp to LDT  <----------<<
-        LocalDateTime userRequestedStartDT = startTS.toLocalDateTime();
-        LocalDateTime userRequestedEndDT = endTS.toLocalDateTime();
+        //convert Timestamp to local date time
+        LocalDateTime userRequestedStartDateTime = startTimeStamp.toLocalDateTime();
+        LocalDateTime userRequestedEndDateTime = endTimeStamp.toLocalDateTime();
 
-        //   >>---------->   attach local time zone to ^^^ variables  <----------<<
-        userRequestedStartDT = TimeTraveller.attachLocalTimeZone(userRequestedStartDT);
-        userRequestedEndDT = TimeTraveller.attachLocalTimeZone(userRequestedEndDT);
+        //attach local time zone to local date time variables
+        userRequestedStartDateTime = Tiempo.attachLocalTimeZone(userRequestedStartDateTime);
+        userRequestedEndDateTime = Tiempo.attachLocalTimeZone(userRequestedEndDateTime);
 
-        //  >>>----->   Confirm appointment start time is not before now()   <-----<<<
-        if (startTS.before(Timestamp.valueOf(LocalDateTime.now())))
+        //confirmation that appointment start time is not before present now
+        if (startTimeStamp.before(Timestamp.valueOf(LocalDateTime.now())))
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("INVALID ENTRY");
@@ -214,8 +214,8 @@ public class AddAppointmentScreenController implements Initializable {
             return;
         }
 
-        //  >>>----->   Confirm end time is not before start time   <-----<<<
-        else if (endTS.before(startTS) || endTS.equals(startTS))
+        //confirmation that end time is not before start time
+        else if (endTimeStamp.before(startTimeStamp) || endTimeStamp.equals(startTimeStamp))
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("INVALID ENTRY");
@@ -224,9 +224,9 @@ public class AddAppointmentScreenController implements Initializable {
             return;
         }
 
-        //  >>>----->   Confirm appointment time values are valid and within business hours   <-----<<<
-        //  >>>----->   NOTE - This should never execute due to comboBoxes only allowing valid time entry   <-----<<<
-        else if (!TimeTraveller.inBusinessHours(userRequestedStartDT, userRequestedEndDT))
+        //confirmation that appointment time values are valid and within business hours
+        //this should not execute due to combo boxes only allowing valid time entry
+        else if (!Tiempo.businessHours(userRequestedStartDateTime, userRequestedEndDateTime))
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("INVALID ENTRY");
@@ -235,59 +235,48 @@ public class AddAppointmentScreenController implements Initializable {
             return;
         }
 
-        //  >>>----->   Confirm appointment time values are Monday - Friday   <-----<<<
-        //  >>>----->   Per instructor, business is operational 7 days/week   <-----<<<
-//        else if (!TimeTraveller.isMondayThruFriday(userRequestedStartDT, userRequestedEndDT))
-//        {
-//            Alert alert = new Alert(Alert.AlertType.ERROR);
-//            alert.setTitle("INVALID ENTRY");
-//            alert.setContentText("Business week is Monday Through Friday.");
-//            alert.showAndWait();
-//            return;
-//        }
-
-        //  >>>----->   Confirm proposed appointment times do not overlap existing customer appointments   <-----<<<
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 1)
+        //confirmation that proposed appointment times do not overlap existing customer appointments
+        else if (Tiempo.overlappingTime(newAppointment, customer, userRequestedStartDateTime, userRequestedEndDateTime) == 1)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("SCHEDULING CONFLICT");
+            alert.setTitle("Error");
             alert.setContentText("Requested appointment start time overlaps existing appointment.");
             alert.showAndWait();
             return;
         }
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 2)
+        else if (Tiempo.overlappingTime(newAppointment, customer, userRequestedStartDateTime, userRequestedEndDateTime) == 2)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("SCHEDULING CONFLICT");
+            alert.setTitle("ErrorT");
             alert.setContentText("Requested appointment end time overlaps existing appointment.");
             alert.showAndWait();
             return;
         }
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 3)
+        else if (Tiempo.overlappingTime(newAppointment, customer, userRequestedStartDateTime, userRequestedEndDateTime) == 3)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("SCHEDULING CONFLICT");
+            alert.setTitle("Error");
             alert.setContentText("Appointment already scheduled between the requested start/end time.");
             alert.showAndWait();
             return;
         }
 
-        //   >>----->   no overlapping appointments found   <-----<<
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 4)
+        //no overlapping appointments found
+        else if (Tiempo.overlappingTime(newAppointment, customer, userRequestedStartDateTime, userRequestedEndDateTime) == 4)
         {
             System.out.println("No chronological errors or scheduling conflicts detected. Adding appointment.");
 
-            //  SQL Cols for reference VVV
+            //  references in SQL
             //  Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID
 
-            //   >>----->   ADD the new appointment to database (add values to database)   <-----<<
-            DBAppointments.addNewAppointment(title, description, location, type, startTS, endTS, customerID, userID, contactID);
+            //adding the new appointment to the database
+            DBAppointments.addNewAppointment(title, description, location, type, startTimeStamp, endTimeStamp, customerID, userID, contactID);
 
-            //  >>----->   reload screen after adding new appointment      <-----<<
+            //reloading screen after adding new appointment
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
             stage.setScene(new Scene(scene));
-            stage.centerOnScreen();                 //  ----------------   Center Screen
+            stage.centerOnScreen();
             stage.show();
         }
 
@@ -296,7 +285,7 @@ public class AddAppointmentScreenController implements Initializable {
     /**
      * This method returns the user to the previous screen (Appointments screen).
      *
-     * @param event Executes when the user presses the Cancel button.
+     * @param event Executes when the user presses the cancel button.
      * @throws IOException In the event of an IO error.
      */
     @FXML
@@ -311,9 +300,9 @@ public class AddAppointmentScreenController implements Initializable {
 
 
     /**
-     * This method initializes the Add Appointment screen. Here the dropDownStart, dropDownEnd, dropDownContact, dropDownCustomer, and dropDownUser comboboxes are populated.
+     * This method initializes the Add Appointment screen. Here the starttime_cbox, endtime_cbox, contact_cbox, customerID_cbox, and userID_cbox comboboxes are populated.
      *
-     * lambda #1 - populates Observable list contactNames with String values of contact name
+     * lambda #1 - populates Observable list allExistingContacts with String values of contact name
      * lambda #2 - populates Observable list customerIDs with String values of customer ID numbers.
      * lambda #3 - populates Observable list userIDs with String values of user ID numbers.
      *
@@ -325,86 +314,86 @@ public class AddAppointmentScreenController implements Initializable {
     {
         try {
 
-            //   >>---------->   populate dropDownContact   <----------
-            ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+            //populating contact_cbox
+            ObservableList<Contact> allExistingContacts = DBContacts.getAllContacts();
             ObservableList<String> contactNames = FXCollections.observableArrayList();
 
-            //  >>---------->   LAMBDA expression #1  <----------<<
-            allContacts.forEach(contact -> contactNames.add(contact.getContactName()));
+            //lambda expression 1
+            allExistingContacts.forEach(contact -> contactNames.add(contact.getContactName()));
 
             contact_cbox.setItems(contactNames);
             contact_cbox.setVisibleRowCount(5);
 
 
-            //   >>---------->   populate dropDownCustomer   <----------<<
-            ObservableList<Customer> allCustomers = DBCustomers.getAllCustomers();
+            //populates customerID_cbox
+            ObservableList<Customer> allExistingCustomers = DBCustomers.getAllCustomers();
             ObservableList<String> customerIDs = FXCollections.observableArrayList();
 
-            //  >>-------->   LAMBDA expression #2  <--------<<
-            allCustomers.forEach(customer -> customerIDs.add(String.valueOf(customer.getCustomerID())));
+            //lambda expression 2
+            allExistingCustomers.forEach(customer -> customerIDs.add(String.valueOf(customer.getCustomerID())));
 
             customerID_cbox.setItems(customerIDs);
             customerID_cbox.setVisibleRowCount(5);
 
 
-            //   >>---------->   populate dropDownUser   <----------<<
+            //populates userID_cbox
             ObservableList<User> allUsers = DBUsers.getAllUsers();
             ObservableList<String> userIDs = FXCollections.observableArrayList();
 
-            //  >>-------->   LAMBDA expression #3  <--------<<
+            //lambda expression 3
             allUsers.forEach(user -> userIDs.add(String.valueOf(user.getUserID())));
 
             userID_cbox.setItems(userIDs);
             userID_cbox.setVisibleRowCount(5);
 
 
-            //   >>---------->   populate dropDownStart   <----------<<
-            //   >>---------->   appointment time range is 8am to 10pm EST   <----------<<
+            //populates starttime_cbox
+            //the appointment time range is 8am to 10pm EST
             ObservableList<String> startTimes = FXCollections.observableArrayList();
 
-            LocalDateTime earliestStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));     // ---   8:00 am earliest start time
-            earliestStartEST = TimeTraveller.attachESTTimeZone(earliestStartEST);                                   // ---   set timezone to EST
+            LocalDateTime beginningStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));     // ---   8:00 am earliest start time
+            beginningStartEST = Tiempo.attachESTTimeZone(beginningStartEST);                                   // ---   set timezone to EST
 
-            LocalDateTime earliestStartLocalTime = TimeTraveller.convertESTToLocalTimeZone(earliestStartEST);       // ---   set variable to LDT equivalent
+            LocalDateTime earliestStartLocalTime = Tiempo.convertESTToLocalTimeZone(beginningStartEST);       // ---   set variable to LDT equivalent
 
-            LocalDateTime latestStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 45));     // ---   9:45 pm latest start time
-            latestStartEST = TimeTraveller.attachESTTimeZone(latestStartEST);                                       // ---   set timezone to EST
+            LocalDateTime lateStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 45));     // ---   9:45 pm latest start time
+            lateStartEST = Tiempo.attachESTTimeZone(lateStartEST);                                       // ---   set timezone to EST
 
-            LocalDateTime latestStartLocalTime = TimeTraveller.convertESTToLocalTimeZone(latestStartEST);           // ---   set variable to LDT equivalent
+            LocalDateTime latestStartLocalTime = Tiempo.convertESTToLocalTimeZone(lateStartEST);           // ---   set variable to LDT equivalent
 
-            //   >>---------->  add start times to list   <----------<<
+            //adding start times to list
             while (earliestStartLocalTime.isBefore(latestStartLocalTime.plusMinutes(1)))
             {
                 startTimes.add(earliestStartLocalTime.toLocalTime().toString());
                 earliestStartLocalTime = earliestStartLocalTime.plusMinutes(15);
             }
 
-            //   >>---------->  set items in dropdown start time combobox   <----------<<
+            //setting items in dropdown start time combo box
             starttime_cbox.setItems(startTimes);
 
 
-            //   >>---------->   populate dropDownEnd   <----------<<
-            //   >>---------->   appointment time range is 8am to 10pm EST   <----------<<
+            //populating endtime_cbox
+            //appointment time range is 8am to 10pm EST
             ObservableList<String> endTimes = FXCollections.observableArrayList();
 
             LocalDateTime earliestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 15));      // ---   8:15 am latest start time
-            earliestEndEST = TimeTraveller.attachESTTimeZone(earliestEndEST);                                       // ---   set timezone to EST
+            earliestEndEST = Tiempo.attachESTTimeZone(earliestEndEST);                                       // ---   set timezone to EST
 
-            LocalDateTime earliestEndLocalTime = TimeTraveller.convertESTToLocalTimeZone(earliestEndEST);           // ---   set variable to local time equivalent
+            LocalDateTime earliestEndLocalTime = Tiempo.convertESTToLocalTimeZone(earliestEndEST);           // ---   set variable to local time equivalent
 
             LocalDateTime latestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));        // ---   10:00 pm latest end time
-            latestEndEST = TimeTraveller.attachESTTimeZone(latestEndEST);                                           // ---   set timezone to EST
+            latestEndEST = Tiempo.attachESTTimeZone(latestEndEST);                                           // ---   set timezone to EST
 
-            LocalDateTime latestEndLocalTime = TimeTraveller.convertESTToLocalTimeZone(latestEndEST);               // ---   set variable to local time equivalent
+            LocalDateTime latestEndLocalTime = Tiempo.convertESTToLocalTimeZone(latestEndEST);               // ---   set variable to local time equivalent
 
-            //   >>---------->  add end times to list   <----------<<
+            //adding end times to list
             while (earliestEndLocalTime.isBefore(latestEndLocalTime.plusMinutes(1)))
             {
                 endTimes.add(earliestEndLocalTime.toLocalTime().toString());
                 earliestEndLocalTime = earliestEndLocalTime.plusMinutes(15);
             }
 
-            //   >>---------->  set items in dropdown end time combobox   <----------<<
+            //setting items endtime_cbox combobox
             endtime_cbox.setItems(endTimes);
 
         }

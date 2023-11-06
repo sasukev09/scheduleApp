@@ -9,7 +9,7 @@ import Models.Appointment;
 import Models.Contact;
 import Models.Customer;
 import Models.User;
-import Utility.TimeTraveller;
+import Utility.Tiempo;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,7 +28,6 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
@@ -194,8 +193,8 @@ public class ModifyAppointmentScreenController implements Initializable {
         String endDate = datePickerEnd.getValue().format(dateFormatter);
 
         //   -----   convert to Timestamp   -----
-        Timestamp startTS = TimeTraveller.convertStringTimeDate2TimeStamp(startTime, startDate);
-        Timestamp endTS = TimeTraveller.convertStringTimeDate2TimeStamp(endTime, endDate);
+        Timestamp startTS = Tiempo.convertStringTimeDate2TimeStamp(startTime, startDate);
+        Timestamp endTS = Tiempo.convertStringTimeDate2TimeStamp(endTime, endDate);
 
         //   -----------------------------   Test input data   ---------------------------------------
 //        System.out.println(title);
@@ -216,8 +215,8 @@ public class ModifyAppointmentScreenController implements Initializable {
         LocalDateTime userRequestedEndDT = endTS.toLocalDateTime();
 
         //   >>---------->   attach local time zone to ^^^ variables  <----------<<
-        userRequestedStartDT = TimeTraveller.attachLocalTimeZone(userRequestedStartDT);
-        userRequestedEndDT = TimeTraveller.attachLocalTimeZone(userRequestedEndDT);
+        userRequestedStartDT = Tiempo.attachLocalTimeZone(userRequestedStartDT);
+        userRequestedEndDT = Tiempo.attachLocalTimeZone(userRequestedEndDT);
 
 
         //  >>>----->   Confirm appointment start time is not before now()   <-----<<<
@@ -242,7 +241,7 @@ public class ModifyAppointmentScreenController implements Initializable {
 
         //  >>>----->   Confirm appointment time values are valid and within business hours   <-----<<<
         //  >>>----->   NOTE - This should never execute due to comboBoxes only allowing valid time entry   <-----<<<
-        else if (!TimeTraveller.inBusinessHours(userRequestedStartDT, userRequestedEndDT))
+        else if (!Tiempo.businessHours(userRequestedStartDT, userRequestedEndDT))
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("INVALID ENTRY");
@@ -263,7 +262,7 @@ public class ModifyAppointmentScreenController implements Initializable {
 //        }
 
         //  >>>----->   Confirm proposed appointment times do not overlap existing customer appointments   <-----<<<
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 1)
+        else if (Tiempo.overlappingTime(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 1)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("SCHEDULING CONFLICT");
@@ -271,7 +270,7 @@ public class ModifyAppointmentScreenController implements Initializable {
             alert.showAndWait();
             return;
         }
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 2)
+        else if (Tiempo.overlappingTime(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 2)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("SCHEDULING CONFLICT");
@@ -279,7 +278,7 @@ public class ModifyAppointmentScreenController implements Initializable {
             alert.showAndWait();
             return;
         }
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 3)
+        else if (Tiempo.overlappingTime(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 3)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("SCHEDULING CONFLICT");
@@ -289,7 +288,7 @@ public class ModifyAppointmentScreenController implements Initializable {
         }
 
         //   >>----->   no overlapping appointments found   <-----<<
-        else if (TimeTraveller.isOverlappingTimes(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 4)
+        else if (Tiempo.overlappingTime(isNewAppointment, customer, userRequestedStartDT, userRequestedEndDT) == 4)
         {
             System.out.println("No chronological errors or scheduling conflicts detected. Adding appointment.");
 
@@ -381,14 +380,14 @@ public class ModifyAppointmentScreenController implements Initializable {
             ObservableList<String> startTimes = FXCollections.observableArrayList();
 
             LocalDateTime earliestStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));     // ---   8:00 am earliest start time
-            earliestStartEST = TimeTraveller.attachESTTimeZone(earliestStartEST);                                   // ---   set timezone to EST
+            earliestStartEST = Tiempo.attachESTTimeZone(earliestStartEST);                                   // ---   set timezone to EST
 
-            LocalDateTime earliestStartLocalTime = TimeTraveller.convertESTToLocalTimeZone(earliestStartEST);       // ---   set variable to local time equivalent
+            LocalDateTime earliestStartLocalTime = Tiempo.convertESTToLocalTimeZone(earliestStartEST);       // ---   set variable to local time equivalent
 
             LocalDateTime latestStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 45));     // ---   9:45 pm latest start time
-            latestStartEST = TimeTraveller.attachESTTimeZone(latestStartEST);                                       // ---   set timezone to EST
+            latestStartEST = Tiempo.attachESTTimeZone(latestStartEST);                                       // ---   set timezone to EST
 
-            LocalDateTime latestStartLocalTime = TimeTraveller.convertESTToLocalTimeZone(latestStartEST);           // ---   set variable to local time equivalent
+            LocalDateTime latestStartLocalTime = Tiempo.convertESTToLocalTimeZone(latestStartEST);           // ---   set variable to local time equivalent
 
             //   >>---------->  add start times to list   <----------<<
             while (earliestStartLocalTime.isBefore(latestStartLocalTime.plusMinutes(1)))
@@ -406,14 +405,14 @@ public class ModifyAppointmentScreenController implements Initializable {
             ObservableList<String> endTimes = FXCollections.observableArrayList();
 
             LocalDateTime earliestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 15));      // ---   8:15 am latest start time
-            earliestEndEST = TimeTraveller.attachESTTimeZone(earliestEndEST);                                       // ---   set timezone to EST
+            earliestEndEST = Tiempo.attachESTTimeZone(earliestEndEST);                                       // ---   set timezone to EST
 
-            LocalDateTime earliestEndLocalTime = TimeTraveller.convertESTToLocalTimeZone(earliestEndEST);           // ---   set variable to local time equivalent
+            LocalDateTime earliestEndLocalTime = Tiempo.convertESTToLocalTimeZone(earliestEndEST);           // ---   set variable to local time equivalent
 
             LocalDateTime latestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));        // ---   10:00 pm latest end time
-            latestEndEST = TimeTraveller.attachESTTimeZone(latestEndEST);                                           // ---   set timezone to EST
+            latestEndEST = Tiempo.attachESTTimeZone(latestEndEST);                                           // ---   set timezone to EST
 
-            LocalDateTime latestEndLocalTime = TimeTraveller.convertESTToLocalTimeZone(latestEndEST);               // ---   set variable to local time equivalent
+            LocalDateTime latestEndLocalTime = Tiempo.convertESTToLocalTimeZone(latestEndEST);               // ---   set variable to local time equivalent
 
             //   >>---------->  add end times to list   <----------<<
             while (earliestEndLocalTime.isBefore(latestEndLocalTime.plusMinutes(1)))

@@ -14,7 +14,7 @@ import java.time.format.DateTimeFormatter;
 /**
  * This class handles time conversion duties.
  */
-public class TimeTraveller {
+public class Tiempo {
 
     /**
      * This method converts String values of time and date into properly formatted Timestamp date/time.
@@ -81,12 +81,12 @@ public class TimeTraveller {
      * @return Returns true if appointment start/end times are within business hours, false if not.
      * @throws DateTimeException In the event of a DateTime error.
      */
-    public static boolean inBusinessHours(LocalDateTime requestedStartLDT, LocalDateTime requestedEndLDT) throws DateTimeException
+    public static boolean businessHours(LocalDateTime requestedStartLDT, LocalDateTime requestedEndLDT) throws DateTimeException
     {
 
         //   >>----->   establish user requested LDT in Zone ID system.default()   <-----<<
-        requestedStartLDT = TimeTraveller.attachLocalTimeZone(requestedStartLDT);
-        requestedEndLDT = TimeTraveller.attachLocalTimeZone(requestedEndLDT);
+        requestedStartLDT = Tiempo.attachLocalTimeZone(requestedStartLDT);
+        requestedEndLDT = Tiempo.attachLocalTimeZone(requestedEndLDT);
 
 
         System.out.println("Requested start time in local time = " + requestedStartLDT);
@@ -99,16 +99,16 @@ public class TimeTraveller {
 
         //   >>----->   establish business hours in EST   <-----<<
         LocalDateTime workdayStartTimeEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));      // ---   8:00 am start of workday
-        workdayStartTimeEST = TimeTraveller.attachESTTimeZone(workdayStartTimeEST);                                 // ---   set timezone to EST
+        workdayStartTimeEST = Tiempo.attachESTTimeZone(workdayStartTimeEST);                                 // ---   set timezone to EST
 
-        LocalDateTime workdayStartLDT = TimeTraveller.convertESTToLocalTimeZone(workdayStartTimeEST);               // ---   set variable to LDT equivalent
+        LocalDateTime workdayStartLDT = Tiempo.convertESTToLocalTimeZone(workdayStartTimeEST);               // ---   set variable to LDT equivalent
         LocalTime workdayStartLocalTime = workdayStartLDT.toLocalTime();                                            // ---   extract local time
 
 
         LocalDateTime workdayEndTimeEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));       // ---   10:00 am end of workday
-        workdayEndTimeEST = TimeTraveller.attachESTTimeZone(workdayEndTimeEST);                                     // ---   set timezone to EST
+        workdayEndTimeEST = Tiempo.attachESTTimeZone(workdayEndTimeEST);                                     // ---   set timezone to EST
 
-        LocalDateTime workdayEndLDT = TimeTraveller.convertESTToLocalTimeZone(workdayEndTimeEST);                   // ---   set variable to LDT equivalent
+        LocalDateTime workdayEndLDT = Tiempo.convertESTToLocalTimeZone(workdayEndTimeEST);                   // ---   set variable to LDT equivalent
         LocalTime workdayEndLocalTime = workdayEndLDT.toLocalTime();                                                // ---   extract local time
 
 
@@ -155,15 +155,15 @@ public class TimeTraveller {
 
     /**
      * This method evaluates if user requested appointment date/time will overlap any existing appointments.
-     * @param isNewAppointment true if this appointment is a new appointment to be added, false if modifying existing appointment
+     * @param newAppointment true if this appointment is a new appointment to be added, false if modifying existing appointment
      * @param customer Customer in which appointment is being scheduled
-     * @param requestedStartLDT user requested appointment start date/time
-     * @param requestedEndLDT user requested appointment end date/time
+     * @param requestStartLocalDateTime user requested appointment start date/time
+     * @param requestEndLocalDateTime user requested appointment end date/time
      * @return Returns 1 if overlap is found for user requested start date/time, returns 2 if overlap is found for user
      * requested end date/time, returns 3 if an appointment is already scheduled  between user requested start/end
      * date/time, returns 4 if no overlap or no appointments are found for customer.
      */
-    public static int isOverlappingTimes(boolean isNewAppointment, Customer customer, LocalDateTime requestedStartLDT, LocalDateTime requestedEndLDT)
+    public static int overlappingTime(boolean newAppointment, Customer customer, LocalDateTime requestStartLocalDateTime, LocalDateTime requestEndLocalDateTime)
     {
         ObservableList<Appointment> customerAppointments = customer.getCustomerAppointmentList();
         ObservableList<Appointment> updatedCustomerAppointments = FXCollections.observableArrayList();
@@ -171,7 +171,7 @@ public class TimeTraveller {
         System.out.println(customer.getCustomerName());
 
         //   >>---------->   if modifying appointment, remove appointment to be modified from list   <----------<<
-        if (customer.hasAppointments() && !isNewAppointment)
+        if (customer.hasAppointments() && !newAppointment)
         {
             for (Appointment a : customerAppointments)
             {
@@ -195,26 +195,26 @@ public class TimeTraveller {
                 LocalDateTime thisAppointmentEnd = a.getAppointmentEnd();
 
                 System.out.println("This appointment start/end : " + thisAppointmentStart + " - " + thisAppointmentEnd);
-                System.out.println("Requested start/end : " + requestedStartLDT + " - " + requestedEndLDT);
+                System.out.println("Requested start/end : " + requestStartLocalDateTime + " - " + requestEndLocalDateTime);
 
                 // >>----->  check start times   <-----<<
-                if (requestedStartLDT.equals(thisAppointmentStart) ||
+                if (requestStartLocalDateTime.equals(thisAppointmentStart) ||
 //                        (requestedStartLDT.equals(thisAppointmentEnd)) ||         //   commented out if back to back appointments not allowed
-                        (requestedStartLDT.isAfter(thisAppointmentStart) && requestedStartLDT.isBefore(thisAppointmentEnd)))
+                        (requestStartLocalDateTime.isAfter(thisAppointmentStart) && requestStartLocalDateTime.isBefore(thisAppointmentEnd)))
                 {
                     System.out.println("This appointment start time/date conflicts with existing appointment ID " + a.getAppointmentID());
                     return 1;
                 }
                 // >>----->  check end times   <-----<<
-                else if (requestedEndLDT.equals(thisAppointmentEnd) ||
+                else if (requestEndLocalDateTime.equals(thisAppointmentEnd) ||
 //                        (requestedEndLDT.equals(thisAppointmentStart)) ||         //   commented out if back to back appointments not allowed
-                        ((requestedEndLDT.isAfter(thisAppointmentStart) && requestedEndLDT.isBefore(thisAppointmentEnd))))
+                        ((requestEndLocalDateTime.isAfter(thisAppointmentStart) && requestEndLocalDateTime.isBefore(thisAppointmentEnd))))
                 {
                     System.out.println("This appointment end time/date conflicts with existing appointment ID " + a.getAppointmentID());
                     return 2;
                 }
                 // >>----->  check if requested times encompass an existing appointment  <-----<<
-                else if (requestedStartLDT.isBefore(thisAppointmentStart) && requestedEndLDT.isAfter(thisAppointmentEnd))
+                else if (requestStartLocalDateTime.isBefore(thisAppointmentStart) && requestEndLocalDateTime.isAfter(thisAppointmentEnd))
                 {
                     System.out.println("Appointment ID " + a.getAppointmentID() + " is during the requested start/end time.");
                     return 3;
