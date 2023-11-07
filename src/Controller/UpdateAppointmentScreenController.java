@@ -1,10 +1,10 @@
 package Controller;
 
 
-import DAO.DBAppointments;
-import DAO.DBContacts;
-import DAO.DBCustomers;
-import DAO.DBUsers;
+import DAO.DAOAppointments;
+import DAO.DAOContacts;
+import DAO.DAOCustomers;
+import DAO.DAOUsers;
 import Models.Appointment;
 import Models.Contact;
 import Models.Customer;
@@ -96,7 +96,7 @@ public class UpdateAppointmentScreenController implements Initializable {
     @FXML
     void onActionCustomerComboBox(ActionEvent actionEvent)
     {
-        ObservableList<Customer> allCustomers = DBCustomers.getAllCustomers();
+        ObservableList<Customer> allCustomers = DAOCustomers.getAllCustomers();
 
         int customerID = Integer.parseInt(customer_cbox.getSelectionModel().getSelectedItem());
         String customerName = "";
@@ -121,7 +121,7 @@ public class UpdateAppointmentScreenController implements Initializable {
     @FXML
     void onActionUserComboBox(ActionEvent actionEvent)
     {
-        ObservableList<User> allUsers = DBUsers.getAllUsers();
+        ObservableList<User> allUsers = DAOUsers.getAllUsers();
         int userID = Integer.parseInt(user_cbox.getSelectionModel().getSelectedItem());
         String userName = "";
 
@@ -160,10 +160,10 @@ public class UpdateAppointmentScreenController implements Initializable {
         int userID = Integer.parseInt(user_cbox.getValue());
 
         //getting customer from database
-        Customer customer = DBCustomers.getCustomer(customerID);
+        Customer customer = DAOCustomers.getCustomer(customerID);
 
         //getting contact ID from contact string
-        ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+        ObservableList<Contact> allContacts = DAOContacts.getAllContacts();
         int contactID = 0;
 
         for (Contact c : allContacts)
@@ -271,11 +271,11 @@ public class UpdateAppointmentScreenController implements Initializable {
             System.out.println("Appointment added.");
 
             //adding the new appointment to database
-            DBAppointments.modifyAppointment(title, description, location, type, startTS, endTS, customerID, userID, contactID, selectedAppointment.getAppointmentID());
+            DAOAppointments.modifyAppointment(title, description, location, type, startTS, endTS, customerID, userID, contactID, selectedAppointment.getAppointmentID());
 
             //reloading screen after adding new appointment
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
+            scene = FXMLLoader.load(getClass().getResource("/Views/AppointmentsMenu.fxml"));
             stage.setScene(new Scene(scene));
             stage.centerOnScreen();
             stage.show();
@@ -293,7 +293,7 @@ public class UpdateAppointmentScreenController implements Initializable {
     void onActionCancelButton(ActionEvent event) throws IOException
     {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/AppointmentsMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -317,7 +317,7 @@ public class UpdateAppointmentScreenController implements Initializable {
             selectedAppointment = AppointmentScreenController.selectedAppointment;
 
             //populating contact_cbox
-            ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+            ObservableList<Contact> allContacts = DAOContacts.getAllContacts();
             ObservableList<String> contactNames = FXCollections.observableArrayList();
 
             //lambda 1
@@ -328,7 +328,7 @@ public class UpdateAppointmentScreenController implements Initializable {
 
 
             //populating customer_cbox
-            ObservableList<Customer> allCustomers = DBCustomers.getAllCustomers();
+            ObservableList<Customer> allCustomers = DAOCustomers.getAllCustomers();
             ObservableList<String> customerIDs = FXCollections.observableArrayList();
 
             //lambda 2
@@ -340,7 +340,7 @@ public class UpdateAppointmentScreenController implements Initializable {
 
 
             //populating user_cbox
-            ObservableList<User> allUsers = DBUsers.getAllUsers();
+            ObservableList<User> allUsers = DAOUsers.getAllUsers();
             ObservableList<String> userIDs = FXCollections.observableArrayList();
 
             //lambda 3

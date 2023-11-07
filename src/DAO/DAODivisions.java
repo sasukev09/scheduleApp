@@ -9,21 +9,20 @@ import java.sql.*;
 
 
 /**
- * This class manages all database exchanges associated with Division data.
+ * This class manages all database actions related with Division data.
  */
-public class DBDivisions {
+public class DAODivisions {
 
     /**
      * This method returns a list of all Divisions in database.
-     * By using a Prepared statement, this method executes a database query to retrieve all divisions stored in the database.
-     * Each tuple retrieved is used to create an Division object which is added to a list and finally returned.
+     * By using a Prepared statement, this method executes a database query to get all divisions stored in the database.
+     * Each tuple retrieved is used to create a Division object which is added to a list and finally returned.
      *
      * @return Returns a list of Division objects.
      */
     public static ObservableList<Division> getAllDivisions()
     {
         ObservableList<Division> divisionList = FXCollections.observableArrayList();
-
         try {
             String sql = "SELECT * FROM first_level_divisions";
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -35,8 +34,8 @@ public class DBDivisions {
                 String divisionName = rs.getString("Division");
                 int countryId = rs.getInt("Country_ID");
 
-                Division d = new Division(divisionID, divisionName, countryId);
-                divisionList.add(d);
+                Division gottenDivision = new Division(divisionID, divisionName, countryId);
+                divisionList.add(gottenDivision);
             }
         }
 
@@ -74,9 +73,9 @@ public class DBDivisions {
 
             }
 
-            Division d = new Division(divisionID, divisionName, countryID);
+            Division gottenDivision = new Division(divisionID, divisionName, countryID);
 
-            return d;
+            return gottenDivision;
         }
 
         catch (SQLException throwables)

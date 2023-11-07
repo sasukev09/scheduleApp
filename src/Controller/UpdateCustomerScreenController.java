@@ -1,8 +1,8 @@
 package Controller;
 
-import DAO.DBCountries;
-import DAO.DBCustomers;
-import DAO.DBDivisions;
+import DAO.DAOCountries;
+import DAO.DAOCustomers;
+import DAO.DAODivisions;
 import Models.Country;
 import Models.Customer;
 import Models.Division;
@@ -75,7 +75,7 @@ public class UpdateCustomerScreenController implements Initializable{
     {
         division_cbox.setValue("");
 
-        ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
+        ObservableList<Division> allDivisions = DAODivisions.getAllDivisions();
         ObservableList<String> filteredDivisionNames = FXCollections.observableArrayList();
 
         String countryName = country_cbox.getValue();
@@ -118,7 +118,7 @@ public class UpdateCustomerScreenController implements Initializable{
         System.out.println("Cancel button pressed");
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/CustomersMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -145,7 +145,7 @@ public class UpdateCustomerScreenController implements Initializable{
 
         int updatedDivisionID = 0;
 
-        ObservableList<Division> divisionList = DBDivisions.getAllDivisions();
+        ObservableList<Division> divisionList = DAODivisions.getAllDivisions();
 
         for (Division division : divisionList)
         {
@@ -155,12 +155,12 @@ public class UpdateCustomerScreenController implements Initializable{
             }
         }
 
-        DBCustomers.modifyCustomer(customerID, updatedCustomerName, updatedCustomerAddress, updatedPostalCode,
+        DAOCustomers.modifyCustomer(customerID, updatedCustomerName, updatedCustomerAddress, updatedPostalCode,
                 updatedCustomerPhone, updatedDivisionID);
 
         //returning to customer screen
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/CustomersMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -182,10 +182,10 @@ public class UpdateCustomerScreenController implements Initializable{
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        ObservableList<Country> allCountries = DBCountries.getAllCountries();
+        ObservableList<Country> allCountries = DAOCountries.getAllCountries();
         ObservableList<String> allCountriesInString = FXCollections.observableArrayList();
 
-        ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
+        ObservableList<Division> allDivisions = DAODivisions.getAllDivisions();
         ObservableList<String> allDivisionsInString = FXCollections.observableArrayList();
 
         //lambda 1

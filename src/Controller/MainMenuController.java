@@ -24,7 +24,7 @@ public class MainMenuController implements Initializable {
      * Main Menu label (title)
      */
     @FXML
-    private Label mainMenuTitle;
+    private Label mainMenu_Title;
 
     /**
      * Button to open Appointments screen
@@ -61,7 +61,7 @@ public class MainMenuController implements Initializable {
     void onActionAppointmentButton(ActionEvent event) throws IOException {
         System.out.println("Appointments button pressed");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/AppointmentsMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -76,7 +76,7 @@ public class MainMenuController implements Initializable {
         System.out.println("Customers button pressed");
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/CustomersMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();

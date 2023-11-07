@@ -1,7 +1,7 @@
 package Models;
 
 /**
- * This class manages Country data.
+ * This class manages the Country data.
  */
 public class Country {
 
@@ -16,7 +16,7 @@ public class Country {
     private String countryName;
 
     /**
-     * This is the constructor for new Country object.
+     * This is the constructor for a new Country.
      *
      * @param id ID of country (int)
      * @param name Name of country (String)
@@ -36,33 +36,6 @@ public class Country {
     {
         return countryName;
     }
-
-//    /**
-//     * This method gets the country ID number of the Country object.
-//     * @return Returns the ID number of country.
-//     */
-//    public int getCountryID()
-//    {
-//        return countryID;
-//    }
-//
-//    /**
-//     * This method sets country ID.
-//     * @param countryID ID of country
-//     */
-//    public void setCountryID(int countryID)
-//    {
-//        this.countryID = countryID;
-//    }
-//
-//    /**
-//     * This method sets country's name.
-//     * @param countryName Name of country
-//     */
-//    public void setCountryName(String countryName)
-//    {
-//        this.countryName = countryName;
-//    }
 
     /**
      * This method overrides the toString() method.

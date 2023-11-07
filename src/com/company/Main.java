@@ -7,8 +7,6 @@ import javafx.scene.Scene;
 import Helper.JDBC;
 import java.io.IOException;
 
-//   >>------------------------------>   Author: Steven Bennett   <------------------------------<<
-
 /**
  * This is the Main class of the app.
  * The application is designed to enable the user to add, modify, and delete customer appointments for contacts.
@@ -16,7 +14,7 @@ import java.io.IOException;
 public class Main extends Application {
 
     /**
-     * This method loads the Login screen.
+     * This method loads the Login menu.
      *
      * @param primaryStage The primaryStage to be set.
      * @throws IOException The exception that is thrown if there's an error.
@@ -24,33 +22,27 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException
     {
-        //  >>---------->   TEMP BYPASS TO SKIP LOGIN SCREEN   <----------<<
-//        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/Views/MainMenu.fxml"));
-
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/Views/Login.fxml"));
-
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/Views/LoginMenu.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
-        primaryStage.setTitle("Client Scheduler");          //   --------------------   Client Scheduler?  ----------------
+        primaryStage.setTitle("Scheduling Application");
         primaryStage.setScene(scene);
-        primaryStage.centerOnScreen();                      //   center on screen
+        primaryStage.centerOnScreen();
         primaryStage.show();
     }
 
 
     /**
      * This is the main method of the application.
-     * This method opens the database connection, launches arguments, then closes database connection.
+     * This method executes the database connection, launches it, and closes database connection.
      *
      * @param args The arguments
      */
     public static void main (String[] args) throws Exception
     {
-        JDBC.openConnection();      //  ------------------   start
-
+        JDBC.openConnection();
         launch(args);
-
-        JDBC.closeConnection();     //  ------------------   end
+        JDBC.closeConnection();
     }
 
 }

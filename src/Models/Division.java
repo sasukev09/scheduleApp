@@ -1,30 +1,30 @@
 package Models;
 
 
-import DAO.DBCountries;
+import DAO.DAOCountries;
 
 /**
- * This class manages all Division data.
+ * This class manages Division data.
  */
 public class Division {
 
     /**
-     * The ID number of the Division object.
+     * The ID number of a Division
      */
     private int divisionID;
 
     /**
-     * The division name of the Division object.
+     * The division name of a Division
      */
     private String divisionName;
 
     /**
-     * The country ID number of the Division object.
+     * The country ID number of a Division
      */
     private int countryID;
 
     /**
-     * This is the constructor for Division class.
+     * This is the constructor of a Division
      * @param divisionID ID number of division
      * @param divisionName Name of Division
      * @param countryID ID number of Division country
@@ -37,7 +37,7 @@ public class Division {
     }
 
     /**
-     * This method gets the division ID number of the Division object.
+     * This method gets the division ID number of a Division
      * @return Returns the division ID number.
      */
     public int getDivisionID() {
@@ -45,7 +45,7 @@ public class Division {
     }
 
     /**
-     * This method gets the division name of the Division object.
+     * This method gets the division name of a Division
      * @return Returns name of division.
      */
     public String getDivisionName() {
@@ -53,7 +53,7 @@ public class Division {
     }
 
     /**
-     * This method gets country ID number of the Division object.
+     * This method gets country ID number of a Division
      * @return Returns the ID number of country.
      */
     public int getCountryID() {
@@ -61,7 +61,7 @@ public class Division {
     }
 
     /**
-     * This method gets the country name of the Division object.
+     * This method gets the country name of a Division
      * @param countryID ID number of country
      * @return Returns name of country.
      */
@@ -71,7 +71,7 @@ public class Division {
 
         try
         {
-            Country c = DBCountries.getCountry(countryID);
+            Country c = DAOCountries.getCountry(countryID);
             countryName = c.getCountryName();
         }
 
@@ -79,37 +79,13 @@ public class Division {
         {
             e.printStackTrace();
         }
-
         return countryName;
     }
 
-//    /**
-//     * sets division ID number
-//     * @param divisionID ID number of division
-//     */
-//    public void setDivisionID(int divisionID) {
-//        this.divisionID = divisionID;
-//    }
-//
-//    /**
-//     * sets division name
-//     * @param divisionName name of division
-//     */
-//    public void setDivisionName(String divisionName) {
-//        this.divisionName = divisionName;
-//    }
-//
-//    /**
-//     * sets country ID number
-//     * @param countryID ID number of country
-//     */
-//    public void setCountryID(int countryID) {
-//        this.countryID = countryID;
-//    }
 
     /**
      * Overrides the toString() method.
-     * @return Returns divison name of the Division object.
+     * @return Returns divison name of a Division
      */
     @Override
     public String toString()

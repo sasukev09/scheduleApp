@@ -9,14 +9,14 @@ import java.sql.*;
 
 
 /**
- * This class manages all database exchanges associated with Country data.
+ * This class manages all database actions related with Country data.
  */
-public class DBCountries {
+public class DAOCountries {
 
     /**
      * This method returns a list of all countries in database.
      * By using a Prepared statement, this method executes a database query to retrieve all countries stored in the database.
-     * Each tuple retrieved is used to create an Country object which is added to a list and finally returned.
+     * Each tuple retrieved is used to create a Country object which is added to a list and finally returned.
      *
      * @return Returns a list of Country objects.
      */
@@ -72,9 +72,8 @@ public class DBCountries {
                 countryName = rs.getString("Country");
             }
 
-            Country c = new Country(countryID, countryName);
-
-            return c;
+            Country newCountry = new Country(countryID, countryName);
+            return newCountry;
         }
 
         catch (SQLException throwables)

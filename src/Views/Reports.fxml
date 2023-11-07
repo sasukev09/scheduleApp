@@ -11,40 +11,57 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportsScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="786.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.ReportsScreenController">
    <children>
-      <VBox alignment="CENTER" layoutY="-2.0" prefHeight="600.0" prefWidth="800.0" spacing="10.0">
+      <VBox alignment="CENTER" layoutY="-2.0" maxWidth="785.0" minWidth="0.0" prefHeight="421.0" prefWidth="785.0" spacing="10.0">
          <children>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
                   <Label alignment="CENTER" prefHeight="30.0" prefWidth="309.0" text="Reports">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font size="18.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <HBox alignment="TOP_CENTER" spacing="130.0">
+            <HBox alignment="CENTER" layoutX="20.0" layoutY="520.0" prefHeight="40.0" prefWidth="800.0" spacing="10.0">
+               <children>
+                  <Label minWidth="50.0" prefHeight="30.0" prefWidth="150.0" text="Show Appointments for" />
+                  <ComboBox fx:id="contact_cbox" onAction="#onActionContactComboBox" prefWidth="170.0" />
+               </children>
+            </HBox>
+            <TableView fx:id="appointment_tableview" prefHeight="151.0" prefWidth="729.0">
+              <columns>
+                <TableColumn fx:id="appointmentid_col" prefWidth="100.0" text="Appointment ID" />
+                <TableColumn fx:id="columnTitle" prefWidth="100.0" text="Title" />
+                  <TableColumn fx:id="columnType" prefWidth="100.0" text="Type" />
+                  <TableColumn fx:id="description_col" prefWidth="140.0" text="Description" />
+                  <TableColumn fx:id="start_col" prefWidth="130.0" text="Start" />
+                  <TableColumn fx:id="end_col" prefWidth="130.0" text="End" />
+                  <TableColumn fx:id="customer_col" prefWidth="65.0" text="Customer" />
+              </columns>
+            </TableView>
+            <HBox alignment="TOP_CENTER" prefHeight="167.0" prefWidth="736.0" spacing="130.0">
                <children>
                   <VBox alignment="TOP_CENTER" spacing="10.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="206.0" text="All Appointments by Month and Type" />
-                        <TableView fx:id="appointmentsMonthTypeTableView" maxWidth="240.0" prefHeight="220.0" prefWidth="240.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="191.0" text="Appointments by Month and Type" />
+                        <TableView fx:id="monthType_tableview" maxWidth="268.0" prefHeight="123.0" prefWidth="226.0">
                           <columns>
-                            <TableColumn fx:id="colMonth" prefWidth="85.0" text="Month" />
-                            <TableColumn fx:id="colType" prefWidth="100.0" text="Type" />
-                              <TableColumn fx:id="colCount" prefWidth="40.0" text="#" />
+                            <TableColumn fx:id="month_col" prefWidth="85.0" text="Month" />
+                            <TableColumn fx:id="type_Col" prefWidth="100.0" text="Type" />
+                              <TableColumn fx:id="monthTypeCount_col" prefWidth="40.0" text="Count" />
                           </columns>
                         </TableView>
                      </children>
                   </VBox>
                   <VBox alignment="TOP_CENTER" layoutX="280.0" layoutY="10.0" spacing="10.0">
                      <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="113.0" text="Customer Locations" />
-                        <TableView fx:id="customerLocationsTableView" maxWidth="240.0" prefHeight="220.0" prefWidth="240.0">
+                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="135.0" text="Locations of Customers" />
+                        <TableView fx:id="customerLoca_tableView" maxWidth="240.0" prefHeight="130.0" prefWidth="228.0">
                            <columns>
-                              <TableColumn fx:id="colDSP" prefWidth="185.0" text="Division/State/Province" />
-                              <TableColumn fx:id="colDSPCount" prefWidth="40.0" text="#" />
+                              <TableColumn fx:id="divStatProv_col" prefWidth="185.0" text="Division/State/Province" />
+                              <TableColumn fx:id="divStatProvCount_col" prefWidth="40.0" text="Count" />
                            </columns>
                         </TableView>
                      </children>
@@ -54,26 +71,9 @@
                   <Insets bottom="10.0" />
                </padding>
             </HBox>
-            <HBox alignment="CENTER" layoutX="20.0" layoutY="520.0" prefHeight="40.0" prefWidth="800.0" spacing="10.0">
+            <HBox alignment="TOP_CENTER" prefHeight="28.0" prefWidth="765.0">
                <children>
-                  <Label minWidth="50.0" prefHeight="30.0" prefWidth="150.0" text="Showing Appointments for" />
-                  <ComboBox fx:id="dropDownContact" onAction="#onActionFilterContacts" prefWidth="170.0" />
-               </children>
-            </HBox>
-            <TableView fx:id="appointmentTableView" prefHeight="220.0" prefWidth="780.0">
-              <columns>
-                <TableColumn fx:id="columnAppointmentID" prefWidth="100.0" text="Appointment ID" />
-                <TableColumn fx:id="columnTitle" prefWidth="100.0" text="Title" />
-                  <TableColumn fx:id="columnType" prefWidth="100.0" text="Type" />
-                  <TableColumn fx:id="columnDescription" prefWidth="140.0" text="Description" />
-                  <TableColumn fx:id="columnStart" prefWidth="130.0" text="Start" />
-                  <TableColumn fx:id="columnEnd" prefWidth="130.0" text="End" />
-                  <TableColumn fx:id="columnCustomer" prefWidth="65.0" text="Customer" />
-              </columns>
-            </TableView>
-            <HBox alignment="TOP_CENTER" prefHeight="40.0" prefWidth="300.0">
-               <children>
-                <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#onActionMainMenu" prefHeight="30.0" prefWidth="110.0" text="Main Menu" />
+                <Button fx:id="Back" mnemonicParsing="false" onAction="#onActionBackButton" prefHeight="30.0" prefWidth="110.0" text="Main Menu" />
                </children>
             </HBox>
          </children>

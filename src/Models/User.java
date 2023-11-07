@@ -1,7 +1,7 @@
 package Models;
 
 
-import DAO.DBAppointments;
+import DAO.DAOAppointments;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -42,16 +42,16 @@ public class User {
     }
 
     /**
-     * This method gets the user ID of the User object.
+     * This method gets the user ID of a User
      *
-     * @return Returns the ID number of the User object.
+     * @return Returns the ID number of a User
      */
     public int getUserID() {
         return userID;
     }
 
     /**
-     * This method sets user ID of the User object.
+     * This method sets user ID of a User
      *
      * @param userID ID of user
      */
@@ -60,7 +60,7 @@ public class User {
     }
 
     /**
-     * This method gets the username of the User object.
+     * This method gets the username of a User
      *
      * @return Returns username.
      */
@@ -68,59 +68,27 @@ public class User {
         return userName;
     }
 
-    //   ------------------------------------   not used   ----------------------------------
-//    /**
-//     * This method sets username of the User object.
-//     *
-//     * @param userName Returns username (used for login)
-//     */
-//    public void setUserName(String userName) {
-//        this.userName = userName;
-//    }
-
-
-    //   ------------------------------------   passwords....private?   ----------------------------------
-
-//    /**
-//     * Returns user password
-//     *
-//     * @return password of user
-//     */
-//    public String getPassword() {
-//        return password;
-//    }
-//
-//    /**
-//     * Sets user password
-//     *
-//     * @param password password of user
-//     */
-//    public void setPassword(String password) {
-//        this.password = password;
-//    }
-
 
     /**
-     * This method gets a list of all appointments associated with this User object.
+     * This method gets a list of all appointments associated with a User
      * Two list are created. The first list consists of all appointments in the database.
      * It is iterated through and all appointments associated with this User is added to a list which is eventually returned.
      *
-     * @return Returns a list of Appointment objects that match this User object's userID.
+     * @return Returns a list of Appointment objects that match this User's userID.
      */
     public ObservableList<Appointment> getUserAppointmentList()
     {
-        ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
-        ObservableList<Appointment> thisUserAppointments = FXCollections.observableArrayList();
+        ObservableList<Appointment> allAppointments = DAOAppointments.getAllAppointments();
+        ObservableList<Appointment> thisUsersAppointments = FXCollections.observableArrayList();
 
-        for (Appointment a : allAppointments)
+        for (Appointment userAppointment : allAppointments)
         {
-            if (a.getUserID() == this.userID)
+            if (userAppointment.getUserID() == this.userID)
             {
-                thisUserAppointments.add(a);
+                thisUsersAppointments.add(userAppointment);
             }
         }
-
-        return thisUserAppointments;
+        return thisUsersAppointments;
 
     }
 
@@ -134,15 +102,13 @@ public class User {
     {
         ObservableList<Appointment> thisUserAppointments = getUserAppointmentList();
 
-        for (Appointment a : thisUserAppointments)
+        for (Appointment soonAppointment : thisUserAppointments)
         {
-            if (a.getAppointmentStart().isAfter(LocalDateTime.now()) && a.getAppointmentStart().isBefore(LocalDateTime.now().plusMinutes(15)))
+            if (soonAppointment.getAppointmentStart().isAfter(LocalDateTime.now()) && soonAppointment.getAppointmentStart().isBefore(LocalDateTime.now().plusMinutes(15)))
             {
-                return a;
+                return soonAppointment;
             }
         }
-
         return null;
     }
-
 }

@@ -1,8 +1,8 @@
 package Controller;
 
-import DAO.DBCountries;
-import DAO.DBCustomers;
-import DAO.DBDivisions;
+import DAO.DAOCountries;
+import DAO.DAOCustomers;
+import DAO.DAODivisions;
 import Models.Country;
 import Models.Division;
 import javafx.collections.FXCollections;
@@ -86,10 +86,10 @@ public class AddCustomerScreenController implements Initializable {
             System.out.println("Adding " + customerName);
 
             //adding a new customer through sql
-            DBCustomers.addNewCustomer(customerName, customerAddress, postalCode, phoneNumber, divisionName);
+            DAOCustomers.addNewCustomer(customerName, customerAddress, postalCode, phoneNumber, divisionName);
 
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+            scene = FXMLLoader.load(getClass().getResource("/Views/CustomersMenu.fxml"));
             stage.setScene(new Scene(scene));
             stage.centerOnScreen();
             stage.show();
@@ -106,7 +106,7 @@ public class AddCustomerScreenController implements Initializable {
     @FXML
     void onActionCountry(ActionEvent event)
     {
-        ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
+        ObservableList<Division> allDivisions = DAODivisions.getAllDivisions();
         ObservableList<String> filteredDivisionNames = FXCollections.observableArrayList();
 
         String countryName = country_cbox.getValue().toString();
@@ -149,7 +149,7 @@ public class AddCustomerScreenController implements Initializable {
         System.out.println("Cancel button pressed");
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/CustomersMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -166,7 +166,7 @@ public class AddCustomerScreenController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         //initialize screen, populate dropDownCountry box w string values
-        ObservableList<Country> allCountries = DBCountries.getAllCountries();
+        ObservableList<Country> allCountries = DAOCountries.getAllCountries();
         ObservableList<String> allCountriesInString = FXCollections.observableArrayList();
 
         allCountries.forEach(country -> allCountriesInString.add(country.toString()));

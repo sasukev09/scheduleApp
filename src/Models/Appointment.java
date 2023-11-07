@@ -1,8 +1,8 @@
 package Models;
 
-import DAO.DBContacts;
-import DAO.DBCustomers;
-import DAO.DBUsers;
+import DAO.DAOContacts;
+import DAO.DAOCustomers;
+import DAO.DAOUsers;
 import javafx.collections.ObservableList;
 import java.time.LocalDateTime;
 
@@ -101,7 +101,7 @@ public class Appointment {
         this.appointmentLocation = appointmentLocation;
         this.appointmentType = appointmentType;
 
-        this.appointmentStart = appointmentStart;       //  Time vars - type LocalDateTime
+        this.appointmentStart = appointmentStart;
         this.appointmentEnd = appointmentEnd;
 
         this.customerID = customerID;
@@ -134,6 +134,7 @@ public class Appointment {
      * @return Returns appointmentDescription.
      */
     public String getAppointmentDescription() {
+
         return appointmentDescription;
     }
 
@@ -142,6 +143,7 @@ public class Appointment {
      * @return Returns appointmentLocation.
      */
     public String getAppointmentLocation() {
+
         return appointmentLocation;
     }
 
@@ -158,6 +160,7 @@ public class Appointment {
      * @return Returns appointmentStart.
      */
     public LocalDateTime getAppointmentStart() {
+
         return appointmentStart;
     }
 
@@ -166,6 +169,7 @@ public class Appointment {
      * @return Returns appointmentEnd.
      */
     public LocalDateTime getAppointmentEnd() {
+
         return appointmentEnd;
     }
 
@@ -174,6 +178,7 @@ public class Appointment {
      * @return Returns customer ID.
      */
     public int getCustomerID() {
+
         return customerID;
     }
 
@@ -182,6 +187,7 @@ public class Appointment {
      * @return Returns userID.
      */
     public int getUserID() {
+
         return userID;
     }
 
@@ -193,42 +199,6 @@ public class Appointment {
         return contactID;
     }
 
-//    public void setCustomerID(int customerID) {
-//        this.customerID = customerID;
-//
-//    }
-//    public void setUserID(int userID) {
-//        this.userID = userID;
-//    }
-//
-//    public void setAppointmentTitle(String appointmentTitle) {
-//        this.appointmentTitle = appointmentTitle;
-//    }
-//
-//    public void setAppointmentDescription(String appointmentDescription) {
-//        this.appointmentDescription = appointmentDescription;
-//    }
-//
-//    public void setAppointmentLocation(String appointmentLocation) {
-//        this.appointmentLocation = appointmentLocation;
-//    }
-//
-//    public void setAppointmentType(String appointmentType) {
-//        this.appointmentType = appointmentType;
-//    }
-//
-//    public void setAppointmentStart(LocalDateTime appointmentStart) {
-//        this.appointmentStart = appointmentStart;
-//    }
-//
-//    public void setAppointmentEnd(LocalDateTime appointmentEnd) {
-//        this.appointmentEnd = appointmentEnd;
-//    }
-//
-//    public void setContactID(int contactID) {
-//        this.contactID = contactID;
-//    }
-
     /**
      * This method gets name of customer assigned to customerID.
      * @param customerID ID number of customer.
@@ -236,20 +206,19 @@ public class Appointment {
      */
     public String getCustomerName(int customerID)
     {
-        ObservableList<Customer> allCustomers = DBCustomers.getAllCustomers();
+        ObservableList<Customer> allCustomers = DAOCustomers.getAllCustomers();
         String customerName = "";
 
         try
         {
-            for (Customer c : allCustomers)
+            for (Customer assignedCustomer : allCustomers)
             {
-                if (c.getCustomerID() == customerID)
+                if (assignedCustomer.getCustomerID() == customerID)
                 {
-                    customerName = c.getCustomerName();
+                    customerName = assignedCustomer.getCustomerName();
                 }
             }
         }
-
         catch (NullPointerException e)
         {
             e.printStackTrace();
@@ -265,20 +234,19 @@ public class Appointment {
      */
     public String getUserName(int userID)
     {
-        ObservableList<User> allUsers = DBUsers.getAllUsers();
+        ObservableList<User> allUsers = DAOUsers.getAllUsers();
         String user_Name = "";
 
         try
         {
-            for (User u : allUsers)
+            for (User assignedUser : allUsers)
             {
-                if (u.getUserID() == userID)
+                if (assignedUser.getUserID() == userID)
                 {
-                    user_Name = u.getUserName();
+                    user_Name = assignedUser.getUserName();
                 }
             }
         }
-
         catch (NullPointerException e)
         {
             e.printStackTrace();
@@ -294,18 +262,17 @@ public class Appointment {
      */
     public String getContactName(int contactID)
     {
-        ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+        ObservableList<Contact> allContacts = DAOContacts.getAllContacts();
         String contact_Name = "";
 
-        for (Contact c : allContacts)
+        for (Contact assignedContact : allContacts)
         {
-            if (c.getContactID() == contactID)
+            if (assignedContact.getContactID() == contactID)
             {
-                contact_Name = c.getContactName();
+                contact_Name = assignedContact.getContactName();
             }
         }
 
         return contact_Name;
     }
-
 }

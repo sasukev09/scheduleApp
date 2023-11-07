@@ -10,9 +10,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * This class manages all database exchanges associated with Contact data.
+ * This class manages all database actions related with Contact data.
  */
-public class DBContacts {
+public class DAOContacts {
 
     /**
      * This method returns a list of all contacts in the database.
@@ -23,7 +23,6 @@ public class DBContacts {
     public static ObservableList<Contact> getAllContacts()
     {
         ObservableList<Contact> allContacts = FXCollections.observableArrayList();
-
         try
         {
             String sql = "SELECT * FROM contacts";

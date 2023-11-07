@@ -1,17 +1,16 @@
 package Models;
 
 
-import DAO.DBAppointments;
-import DAO.DBCountries;
-import DAO.DBDivisions;
+import DAO.DAOAppointments;
+import DAO.DAOCountries;
+import DAO.DAODivisions;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 /**
- * This class manages Customer data.
+ * This class manages the Customer data.
  */
 public class Customer {
-
     private int customerID;
     private String customerName;
     private String customerAddress;
@@ -22,7 +21,7 @@ public class Customer {
     private String customerPhone;
 
     /**
-     * Constructor for Customer class
+     * Constructor for the Customer object.
      * @param customerID ID of customer
      * @param customerName Name of customer
      * @param customerAddress Address of customer
@@ -43,7 +42,7 @@ public class Customer {
     }
 
     /**
-     * This method gets ID number of Customer object.
+     * This method gets ID number of a Customer
      * @return Returns the customer ID number.
      */
     public int getCustomerID() {
@@ -51,7 +50,7 @@ public class Customer {
     }
 
     /**
-     * This method gets the customer name of Customer object.
+     * This method gets the customer name of a Customer
      * @return Returns the name of customer.
      */
     public String getCustomerName() {
@@ -59,7 +58,7 @@ public class Customer {
     }
 
     /**
-     * This method gets customer address of Customer object.
+     * This method gets customer address of a Customer
      * @return Returns address of customer.
      */
     public String getCustomerAddress() {
@@ -67,7 +66,7 @@ public class Customer {
     }
 
     /**
-     * This method gets country name of Customer object.
+     * This method gets country name of a Customer
      * @return Returns name of customer country.
      */
     public String getCustomerCountry() {
@@ -75,7 +74,7 @@ public class Customer {
     }
 
     /**
-     * This method gets customer postal code of Customer object.
+     * This method gets customer postal code of a Customer
      * @return Returns postal code of customer.
      */
     public String getCustomerPostalCode() {
@@ -83,7 +82,7 @@ public class Customer {
     }
 
     /**
-     * This method gets customer phone number of Customer object.
+     * This method gets customer phone number of a Customer
      * @return Returns phone number of customer.
      */
     public String getCustomerPhone() {
@@ -91,68 +90,12 @@ public class Customer {
     }
 
     /**
-     * This method gets the division ID number of Customer object.
+     * This method gets the division ID number of a Customer
      * @return Returns ID number of division.
      */
     public int getDivisionID() {
         return divisionID;
     }
-
-//    /**
-//     * This method sets value of customerID of Customer object.
-//     * @param customerID ID number of customer
-//     */
-//    public void setCustomerID(int customerID) {
-//        this.customerID = customerID;
-//    }
-//
-//    /**
-//     * sets customerName
-//     * @param customerName name of customer
-//     */
-//    public void setCustomerName(String customerName) {
-//        this.customerName = customerName;
-//    }
-//
-//    /**
-//     * sets customer address
-//     * @param customerAddress address of customer
-//     */
-//    public void setCustomerAddress(String customerAddress) {
-//        this.customerAddress = customerAddress;
-//    }
-//
-//    /**
-//     * sets division ID number
-//     * @param divisionID ID number of division
-//     */
-//    public void setDivisionID(int divisionID) {
-//        this.divisionID = divisionID;
-//    }
-//
-//    /**
-//     * sets customer country name
-//     * @param customerCountry name of customer country
-//     */
-//    public void setCustomerCountry(String customerCountry) {
-//        this.customerCountry = customerCountry;
-//    }
-//
-//    /**
-//     * sets customer postal code
-//     * @param customerPostalCode postal code of customer
-//     */
-//    public void setCustomerPostalCode(String customerPostalCode) {
-//        this.customerPostalCode = customerPostalCode;
-//    }
-//
-//    /**
-//     * sets customer phone number
-//     * @param customerPhone phone number of customer
-//     */
-//    public void setCustomerPhone(String customerPhone) {
-//        this.customerPhone = customerPhone;
-//    }
 
     /**
      * This method gets country name of Customer object associated with specified division ID number.
@@ -165,9 +108,9 @@ public class Customer {
 
         try
         {
-            Division d = DBDivisions.getDivision(divisionID);
+            Division d = DAODivisions.getDivision(divisionID);
             int countryID = d.getCountryID();
-            Country c = DBCountries.getCountry(countryID);
+            Country c = DAOCountries.getCountry(countryID);
             countryName = c.getCountryName();
         }
 
@@ -190,7 +133,7 @@ public class Customer {
 
         try
         {
-            Division d = DBDivisions.getDivision(divisionID);
+            Division d = DAODivisions.getDivision(divisionID);
             divisionName = d.getDivisionName();
         }
 
@@ -202,9 +145,9 @@ public class Customer {
         return divisionName;
     }
 
-    //   ------------------------------------    FOR DELETE APPOINTMENT on CUSTOMER SCREEN   ---------------------------------
+    //methods for customer screen and appointment deletion
     /**
-     * This method verifies if customer has any appointments scheduled.
+     * This method verifies if a customer has any appointments scheduled.
      * A list is created and populated with all appointments in the database.
      * Each Appointment is evaluated if it has a matching customer ID number as this Customer object.
      *
@@ -212,10 +155,10 @@ public class Customer {
      */
     public boolean hasAppointments()
     {
-        ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
-        for (Appointment a : allAppointments)
+        ObservableList<Appointment> allAppointments = DAOAppointments.getAllAppointments();
+        for (Appointment has : allAppointments)
         {
-            if (this.getCustomerID() == a.getCustomerID())
+            if (this.getCustomerID() == has.getCustomerID())
             {
                 return true;
             }
@@ -230,18 +173,16 @@ public class Customer {
      */
     public ObservableList<Appointment> getCustomerAppointmentList()
     {
-        ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
+        ObservableList<Appointment> allAppointments = DAOAppointments.getAllAppointments();
         ObservableList<Appointment> thisCustomersAppointments = FXCollections.observableArrayList();
 
-        for (Appointment a : allAppointments)
+        for (Appointment customerAppointment : allAppointments)
         {
-            if (a.getCustomerID() == this.customerID)
+            if (customerAppointment.getCustomerID() == this.customerID)
             {
-                thisCustomersAppointments.add(a);
+                thisCustomersAppointments.add(customerAppointment);
             }
         }
         return thisCustomersAppointments;
     }
-
-
 }

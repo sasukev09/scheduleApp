@@ -7,7 +7,7 @@ import java.sql.SQLException;
 
 
 /**
- * This class manages the database connection.
+ * This class manages the database connection that will be used to connect mysql with intellij
  */
 public abstract class JDBC {
 
@@ -31,7 +31,7 @@ public abstract class JDBC {
         {
             Class.forName(driver); // Locate Driver
             connection = DriverManager.getConnection(jdbc_URL, userName, password); // Reference Connection object
-            System.out.println("Connection successful!\n");
+            System.out.println("Connection successful!");
         }
         catch(SQLException | ClassNotFoundException e)
         {
@@ -60,12 +60,11 @@ public abstract class JDBC {
         try
         {
             connection.close();
-            System.out.println("Connection closed!\n");
+            System.out.println("Connection closed!");
         }
         catch(Exception e)
         {
-            // do nothing!
-            // System.out.println("Error:" + e.getMessage());
+            System.out.println("Error:" + e.getMessage());
         }
     }
 }

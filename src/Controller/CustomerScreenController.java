@@ -1,8 +1,8 @@
 package Controller;
-import DAO.DBAppointments;
-import DAO.DBCountries;
-import DAO.DBCustomers;
-import DAO.DBDivisions;
+import DAO.DAOAppointments;
+import DAO.DAOCountries;
+import DAO.DAOCustomers;
+import DAO.DAODivisions;
 import Models.Country;
 import Models.Customer;
 import Models.Division;
@@ -97,7 +97,7 @@ public class CustomerScreenController implements Initializable {
     {
         System.out.println("Reset button pressed");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/CustomersMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -121,7 +121,7 @@ public class CustomerScreenController implements Initializable {
         String filteredCountry = country_cbox.getValue();
         String filteredDivision = division_cbox.getValue();
 
-        ObservableList<Customer> customerList = DBCustomers.getAllCustomers();
+        ObservableList<Customer> customerList = DAOCustomers.getAllCustomers();
         ObservableList<Customer> filteredCustomerList = FXCollections.observableArrayList();
 
 
@@ -134,7 +134,7 @@ public class CustomerScreenController implements Initializable {
                 System.out.println(filteredCountry);
 
                 //updates division_cbox to reflect divisions in selected country
-                ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
+                ObservableList<Division> allDivisions = DAODivisions.getAllDivisions();
                 ObservableList<String> filteredDivisionNames = FXCollections.observableArrayList();
 
                 for (Division division : allDivisions)
@@ -182,10 +182,10 @@ public class CustomerScreenController implements Initializable {
 
             //updating the tableview
             //creates observable list of string values to populate combo  boxes to filter customer table
-            ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
+            ObservableList<Division> allDivisions = DAODivisions.getAllDivisions();
             ObservableList<String> divisionNames = FXCollections.observableArrayList();
 
-            ObservableList<Country> allCountries = DBCountries.getAllCountries();
+            ObservableList<Country> allCountries = DAOCountries.getAllCountries();
             ObservableList<String> countryNames = FXCollections.observableArrayList();
 
             //lambda 1
@@ -238,7 +238,7 @@ public class CustomerScreenController implements Initializable {
     void onActionAddButton(ActionEvent event) throws IOException {
         System.out.println("Add button pressed");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/AddCustomer.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/AddCustomerMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -263,7 +263,7 @@ public class CustomerScreenController implements Initializable {
             return;
         }
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/ModifyCustomer.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/UpdateCustomer.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -306,18 +306,18 @@ public class CustomerScreenController implements Initializable {
                     if (!selectedCustomer.hasAppointments()) {
                         System.out.println("This customer has no appointments, deleting customer");
 
-                        DBCustomers.deleteCustomer(selectedCustomer.getCustomerID());
+                        DAOCustomers.deleteCustomer(selectedCustomer.getCustomerID());
 
-                        customer_tableview.setItems(DBCustomers.getAllCustomers());
+                        customer_tableview.setItems(DAOCustomers.getAllCustomers());
                     }
                     else if (selectedCustomer.hasAppointments())
                     {
                         System.out.println("This customer has appointments, deleting appointments first, then customer");
 
-                        DBAppointments.deleteCustomerAppointments(selectedCustomer.getCustomerID());
-                        DBCustomers.deleteCustomer(selectedCustomer.getCustomerID());
+                        DAOAppointments.deleteCustomerAppointments(selectedCustomer.getCustomerID());
+                        DAOCustomers.deleteCustomer(selectedCustomer.getCustomerID());
 
-                        customer_tableview.setItems(DBCustomers.getAllCustomers());
+                        customer_tableview.setItems(DAOCustomers.getAllCustomers());
                     }
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
@@ -358,10 +358,10 @@ public class CustomerScreenController implements Initializable {
         try
         {
             //Creating observable lists of string values to populate combo boxes to filter customer table
-            ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
+            ObservableList<Division> allDivisions = DAODivisions.getAllDivisions();
             ObservableList<String> divisionNames = FXCollections.observableArrayList();
 
-            ObservableList<Country> allCountries = DBCountries.getAllCountries();
+            ObservableList<Country> allCountries = DAOCountries.getAllCountries();
             ObservableList<String> countryNames = FXCollections.observableArrayList();
 
             //lambda 1
@@ -371,7 +371,7 @@ public class CustomerScreenController implements Initializable {
             allCountries.forEach(country -> countryNames.add(country.getCountryName()));
 
 
-            customer_tableview.setItems(DBCustomers.getAllCustomers());
+            customer_tableview.setItems(DAOCustomers.getAllCustomers());
 
             customerID_col.setCellValueFactory(new PropertyValueFactory<>("customerID"));
             name_col.setCellValueFactory(new PropertyValueFactory<>("customerName"));

@@ -2,7 +2,7 @@ package Models;
 
 
 /**
- * This class manages data associated Report screen, specifically the Report showing the number of customers per division.
+ * This class manages data associated with the Report screen,  the Report showing the number of customers per division.
  */
 public class ReportByDivision {
 
@@ -17,7 +17,7 @@ public class ReportByDivision {
     private int count;
 
     /**
-     * This is the constructor for ReportByDivision objects.
+     * This is the constructor for ReportByDivision
      * @param division Name of division.
      * @param count Number of customers in division.
      */

@@ -1,6 +1,6 @@
 package Controller;
 
-import DAO.DBUsers;
+import DAO.DAOUsers;
 import Models.Appointment;
 import Models.User;
 import javafx.event.ActionEvent;
@@ -123,7 +123,7 @@ public class LoginScreenController implements Initializable {
 
             ResourceBundle rb = ResourceBundle.getBundle("language");
 
-            User newUser = DBUsers.getUser(user_name, password);
+            User newUser = DAOUsers.getUser(user_name, password);
             //testing input
 //        System.out.println(user_name + " - " + password);
 //        System.out.println("User ID: " + newUser.getUserID());

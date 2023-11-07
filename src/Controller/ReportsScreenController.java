@@ -1,8 +1,8 @@
 package Controller;
 
 
-import DAO.DBAppointments;
-import DAO.DBContacts;
+import DAO.DAOAppointments;
+import DAO.DAOContacts;
 import Models.Appointment;
 import Models.Contact;
 import Models.ReportByDivision;
@@ -36,43 +36,43 @@ public class ReportsScreenController implements Initializable {
     Parent scene;
 
     @FXML
-    private TableView<ReportByMonthType> appointmentsMonthTypeTableView;
+    private TableView<ReportByMonthType> monthType_tableview;
 
     @FXML
-    private TableColumn<?, ?> colMonth;
+    private TableColumn<?, ?> month_col;
 
     @FXML
-    private TableColumn<?, ?> colType;
+    private TableColumn<?, ?> type_Col;
 
     @FXML
-    private TableColumn<?, ?> colCount;
+    private TableColumn<?, ?> monthTypeCount_col;
 
     @FXML
-    private TableView<ReportByDivision> customerLocationsTableView;
+    private TableView<ReportByDivision> customerLoca_tableView;
 
     @FXML
-    private TableColumn<?, ?> colDSP;
+    private TableColumn<?, ?> divStatProv_col;
 
     @FXML
-    private TableColumn<?, ?> colDSPCount;
+    private TableColumn<?, ?> divStatProvCount_col;
 
     @FXML
-    private TableView<Appointment> appointmentTableView;
+    private TableView<Appointment> appointment_tableview;
 
     @FXML
-    private TableColumn<?, ?> columnAppointmentID;
+    private TableColumn<?, ?> appointmentid_col;
 
     @FXML
-    private TableColumn<?, ?> columnCustomer;
+    private TableColumn<?, ?> customer_col;
 
     @FXML
-    private TableColumn<?, ?> columnDescription;
+    private TableColumn<?, ?> description_col;
 
     @FXML
-    private TableColumn<?, ?> columnEnd;
+    private TableColumn<?, ?> end_col;
 
     @FXML
-    private TableColumn<?, ?> columnStart;
+    private TableColumn<?, ?> start_col;
 
     @FXML
     private TableColumn<?, ?> columnTitle;
@@ -81,7 +81,7 @@ public class ReportsScreenController implements Initializable {
     private TableColumn<?, ?> columnType;
 
     @FXML
-    private ComboBox<String> dropDownContact;
+    private ComboBox<String> contact_cbox;
 
     @FXML
     private Button mainMenuButton;
@@ -92,32 +92,32 @@ public class ReportsScreenController implements Initializable {
      * @param event Executes when the user selects a value from the combobox dropDownContact.
      */
     @FXML
-    void onActionFilterContacts(ActionEvent event) {
-        String contactFilter = dropDownContact.getValue();
+    void onActionContactComboBox(ActionEvent event) {
+        String contactFilter = contact_cbox.getValue();
 
         if (contactFilter.equals("All Contacts"))
         {
-            appointmentTableView.setItems(DBAppointments.getAllAppointments());
+            appointment_tableview.setItems(DAOAppointments.getAllAppointments());
         }
 
         else
         {
-            appointmentTableView.setItems(DBAppointments.getFilteredAppointments(null, contactFilter));
+            appointment_tableview.setItems(DAOAppointments.getFilteredAppointments(null, contactFilter));
         }
 
     }
 
     /**
      * This method navigates user back to Main Menu screen.
-     * @param event Executes when the Main Menu button is pressed.
+     * @param event Executes when the Back button is pressed.
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionMainMenu(ActionEvent event) throws IOException {
+    void onActionBackButton(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -126,7 +126,7 @@ public class ReportsScreenController implements Initializable {
     /**
      * This method initializes the Reports screen.
      * The appointment, appointment by month and type, and customer by location tableviews are populated here.
-     * LAMBDA #1 iterates through list of all appointments, adds contact name String value to list contactNames
+     * Lambda 1 iterates through list of all appointments, adds contact name String value to list contactNames
      *
      * @param url the location
      * @param resourceBundle the resources
@@ -134,54 +134,49 @@ public class ReportsScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        // initialize screen
-
         try {
-            ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+            ObservableList<Contact> allContacts = DAOContacts.getAllContacts();
 
             ObservableList<String> contactNames = FXCollections.observableArrayList();
 
-            //   --->   Create All Contacts option in contact filter drop down   <---
+            //creating "All Contacts" option for the contact combo box
             contactNames.add("All Contacts");
 
-            //  --->   LAMBDA expression #1  <---
+            //lambda 1
             allContacts.forEach(contact -> contactNames.add(contact.getContactName()));
 
-            dropDownContact.setItems(contactNames);
-            dropDownContact.setValue("All Contacts");
-            dropDownContact.setVisibleRowCount(5);
+            contact_cbox.setItems(contactNames);
+            contact_cbox.setValue("All Contacts");
+            contact_cbox.setVisibleRowCount(5);
 
-            //  --->   Populate appointmentTableView and columns  <---
-            appointmentTableView.setItems(DBAppointments.getAllAppointments());
+            //populating appointment table view and its columns
+            appointment_tableview.setItems(DAOAppointments.getAllAppointments());
 
-            columnAppointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+            appointmentid_col.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
             columnTitle.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));
-            columnDescription.setCellValueFactory(new PropertyValueFactory<>("appointmentDescription"));
+            description_col.setCellValueFactory(new PropertyValueFactory<>("appointmentDescription"));
             columnType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
-            columnStart.setCellValueFactory(new PropertyValueFactory<>("appointmentStart"));
-            columnEnd.setCellValueFactory(new PropertyValueFactory<>("appointmentEnd"));
-            columnCustomer.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            start_col.setCellValueFactory(new PropertyValueFactory<>("appointmentStart"));
+            end_col.setCellValueFactory(new PropertyValueFactory<>("appointmentEnd"));
+            customer_col.setCellValueFactory(new PropertyValueFactory<>("customerID"));
 
-            //  --->   Populate appointmentsMonthTypeTableView and columns  <---
-            appointmentsMonthTypeTableView.setItems(DBAppointments.getReportsByMonthType());
+            //Populating the month and type table view and its columns
+            monthType_tableview.setItems(DAOAppointments.getReportsByMonthType());
 
-            colMonth.setCellValueFactory(new PropertyValueFactory<>("month"));
-            colType.setCellValueFactory(new PropertyValueFactory<>("type"));
-            colCount.setCellValueFactory(new PropertyValueFactory<>("count"));
+            month_col.setCellValueFactory(new PropertyValueFactory<>("month"));
+            type_Col.setCellValueFactory(new PropertyValueFactory<>("type"));
+            monthTypeCount_col.setCellValueFactory(new PropertyValueFactory<>("count"));
 
-            //  --->   Populate customerLocationsTableView and columns  <---
-            customerLocationsTableView.setItems(DBAppointments.getCustomersByDivision());
+            //Populating the customer locations table view
+            customerLoca_tableView.setItems(DAOAppointments.getCustomersByDivision());
 
-            colDSP.setCellValueFactory(new PropertyValueFactory<>("division"));
-            colDSPCount.setCellValueFactory(new PropertyValueFactory<>("count"));
-
+            divStatProv_col.setCellValueFactory(new PropertyValueFactory<>("division"));
+            divStatProvCount_col.setCellValueFactory(new PropertyValueFactory<>("count"));
         }
 
         catch (Exception e)
         {
             e.printStackTrace();
         }
-
     }
-
 }

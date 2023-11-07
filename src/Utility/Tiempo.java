@@ -12,27 +12,27 @@ import java.time.*;
 import java.time.format.DateTimeFormatter;
 
 /**
- * This class handles time conversion duties.
+ * This class handles time conversion duties, Tiempo is time in spanish.
  */
 public class Tiempo {
 
     /**
-     * This method converts String values of time and date into properly formatted Timestamp date/time.
+     * This method converts String values of time and date into formatted Timestamp date/time.
      *
      * @param time String value of time
      * @param date String value of date
      * @return Returns Timestamp value date/time.
      */
-    public static Timestamp convertStringTimeDate2TimeStamp(String time, String date)        // not UTC
+    public static Timestamp convertStringTimeDate2TimeStamp(String time, String date)
     {
-        DateTimeFormatter hourMinFormatter = DateTimeFormatter.ofPattern("HH:mm");
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyy-MM-dd");
+        DateTimeFormatter formatHourMin = DateTimeFormatter.ofPattern("HH:mm");
+        DateTimeFormatter formatYearMonthDay = DateTimeFormatter.ofPattern("yyy-MM-dd");
 
-        LocalTime localTime = LocalTime.parse(time, hourMinFormatter);
-        LocalDate localDate = LocalDate.parse(date,dateFormatter);
-        LocalDateTime ldt = LocalDateTime.of(localDate, localTime);
+        LocalTime localTime = LocalTime.parse(time, formatHourMin);
+        LocalDate localDate = LocalDate.parse(date,formatYearMonthDay);
+        LocalDateTime LDT = LocalDateTime.of(localDate, localTime);
 
-        return Timestamp.valueOf(ldt);
+        return Timestamp.valueOf(LDT);
     }
 
     /**
@@ -42,9 +42,8 @@ public class Tiempo {
      */
     public static LocalDateTime attachLocalTimeZone(LocalDateTime dateTime)
     {
-        ZonedDateTime zdt = dateTime.atZone(ZoneId.systemDefault());
-
-        return zdt.toLocalDateTime();
+        ZonedDateTime ZDT = dateTime.atZone(ZoneId.systemDefault());
+        return ZDT.toLocalDateTime();
     }
 
     /**
@@ -54,10 +53,8 @@ public class Tiempo {
      */
     public static LocalDateTime attachESTTimeZone(LocalDateTime dateTime)
     {
-        ZonedDateTime zdt = dateTime.atZone(ZoneId.of("America/New_York"));
-//        zdt = zdt.withZoneSameInstant(ZoneId.of("America/New_York"));
-
-        return zdt.toLocalDateTime();
+        ZonedDateTime ZDT = dateTime.atZone(ZoneId.of("America/New_York"));
+        return ZDT.toLocalDateTime();
     }
 
     /**
@@ -67,10 +64,10 @@ public class Tiempo {
      */
     public static LocalDateTime convertESTToLocalTimeZone(LocalDateTime dateTime)
     {
-        ZonedDateTime zdt = dateTime.atZone(ZoneId.of("America/New_York"));
-        zdt = zdt.withZoneSameInstant(ZoneId.systemDefault());
+        ZonedDateTime ZDT = dateTime.atZone(ZoneId.of("America/New_York"));
+        ZDT = ZDT.withZoneSameInstant(ZoneId.systemDefault());
 
-        return zdt.toLocalDateTime();
+        return ZDT.toLocalDateTime();
     }
 
 
@@ -83,8 +80,7 @@ public class Tiempo {
      */
     public static boolean businessHours(LocalDateTime requestedStartLDT, LocalDateTime requestedEndLDT) throws DateTimeException
     {
-
-        //   >>----->   establish user requested LDT in Zone ID system.default()   <-----<<
+        //establish user requested Local date zone in zone ID from the system
         requestedStartLDT = Tiempo.attachLocalTimeZone(requestedStartLDT);
         requestedEndLDT = Tiempo.attachLocalTimeZone(requestedEndLDT);
 
@@ -92,69 +88,41 @@ public class Tiempo {
         System.out.println("Requested start time in local time = " + requestedStartLDT);
         System.out.println("Requested end time in local time = " + requestedEndLDT);
 
-        //   >>----->   extract local time values   <-----<<
+        //getting local time values
         LocalTime requestedStartTime = requestedStartLDT.toLocalTime();
         LocalTime requestedEndTime = requestedEndLDT.toLocalTime();
 
 
-        //   >>----->   establish business hours in EST   <-----<<
-        LocalDateTime workdayStartTimeEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));      // ---   8:00 am start of workday
-        workdayStartTimeEST = Tiempo.attachESTTimeZone(workdayStartTimeEST);                                 // ---   set timezone to EST
+        //setting up business hours in EST
+        LocalDateTime businessHourStartTimeEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));      // ---   8:00 am start of workday
+        businessHourStartTimeEST = Tiempo.attachESTTimeZone(businessHourStartTimeEST);                                 // ---   set timezone to EST
 
-        LocalDateTime workdayStartLDT = Tiempo.convertESTToLocalTimeZone(workdayStartTimeEST);               // ---   set variable to LDT equivalent
+        LocalDateTime workdayStartLDT = Tiempo.convertESTToLocalTimeZone(businessHourStartTimeEST);               // ---   set variable to LDT equivalent
         LocalTime workdayStartLocalTime = workdayStartLDT.toLocalTime();                                            // ---   extract local time
 
 
-        LocalDateTime workdayEndTimeEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));       // ---   10:00 am end of workday
-        workdayEndTimeEST = Tiempo.attachESTTimeZone(workdayEndTimeEST);                                     // ---   set timezone to EST
+        LocalDateTime businessHourEndTimeEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));       // ---   10:00 am end of workday
+        businessHourEndTimeEST = Tiempo.attachESTTimeZone(businessHourEndTimeEST);                                     // ---   set timezone to EST
 
-        LocalDateTime workdayEndLDT = Tiempo.convertESTToLocalTimeZone(workdayEndTimeEST);                   // ---   set variable to LDT equivalent
+        LocalDateTime workdayEndLDT = Tiempo.convertESTToLocalTimeZone(businessHourEndTimeEST);                   // ---   set variable to LDT equivalent
         LocalTime workdayEndLocalTime = workdayEndLDT.toLocalTime();                                                // ---   extract local time
 
 
         System.out.println("Workday start time in local time - " + workdayStartLocalTime.toString() + ". Requested start time - " + requestedStartTime.toString());
         System.out.println("Workday end time in local time - " + workdayEndLocalTime.toString() + ". Requested end time - " + requestedEndTime.toString());
 
-        //   >>----->   evaluate if start/end times are during business hours   <-----<<
-        //   >>----->   note requestedStartTime >= workdayStartLocalTime; requestedEndTime <= workdayEndLocalTime   <-----<<
+        //for start and end times, if they are within business hours
         if ((requestedStartTime.equals(workdayStartLocalTime) || requestedStartTime.isAfter(workdayStartLocalTime)) && requestedStartTime.isBefore(workdayEndLocalTime) &&
                 (requestedEndTime.isAfter(workdayStartLocalTime)) && (requestedEndTime.equals(workdayEndLocalTime) || requestedEndTime.isBefore(workdayEndLocalTime)))
         {
             return true;
         }
-
         return false;
 
     }
 
-
-    //   >>----->   This is commented out. Per program instructor, appointments can be scheduled 7 days/week   <-----<<
-    //   >>----->   It is commented out on AddAppointmentScreenController and ModifyScreenController as well.   <-----<<
-    //   >>----->   I chose not to delete the code in case it was a traditional 5 day workweek.   <-----<<
-//    /**
-//     * This method evaluates if user requested appointment dates are during a Monday - Friday workweek
-//     * @param requestedStartLDT user requested start date
-//     * @param requestedEndLDT user requested end date
-//     * @return true if start/end dates are Monday - Friday, false if not
-//     */
-//    public static boolean isMondayThruFriday(LocalDateTime requestedStartLDT, LocalDateTime requestedEndLDT)
-//    {
-//        DayOfWeek workWeekStartDay = DayOfWeek.MONDAY;
-//        DayOfWeek workWeekEndDay = DayOfWeek.FRIDAY;
-//
-//        if ((workWeekEndDay.getValue() < requestedStartLDT.getDayOfWeek().getValue()) ||
-//                (requestedStartLDT.getDayOfWeek().getValue() < workWeekStartDay.getValue()) ||
-//                ((workWeekEndDay.getValue() < requestedEndLDT.getDayOfWeek().getValue()) ||
-//                        (requestedEndLDT.getDayOfWeek().getValue() < workWeekStartDay.getValue())))
-//        {
-//            return false;
-//        }
-//        return true;
-//    }
-
-
     /**
-     * This method evaluates if user requested appointment date/time will overlap any existing appointments.
+     * This method evaluates if user created appointment date/time will overlap any existing appointments.
      * @param newAppointment true if this appointment is a new appointment to be added, false if modifying existing appointment
      * @param customer Customer in which appointment is being scheduled
      * @param requestStartLocalDateTime user requested appointment start date/time
@@ -170,14 +138,14 @@ public class Tiempo {
 
         System.out.println(customer.getCustomerName());
 
-        //   >>---------->   if modifying appointment, remove appointment to be modified from list   <----------<<
+        //if modified, remove appointment to be modified from list
         if (customer.hasAppointments() && !newAppointment)
         {
-            for (Appointment a : customerAppointments)
+            for (Appointment removeApt : customerAppointments)
             {
-                if (a.getAppointmentID() != UpdateAppointmentScreenController.selectedAppointment.getAppointmentID())
+                if (removeApt.getAppointmentID() != UpdateAppointmentScreenController.selectedAppointment.getAppointmentID())
                 {
-                    updatedCustomerAppointments.add(a);
+                    updatedCustomerAppointments.add(removeApt);
                 }
             }
             customerAppointments = updatedCustomerAppointments;
@@ -185,50 +153,47 @@ public class Tiempo {
 
         if (customer.hasAppointments()) {
 
-
             System.out.println(customer.getCustomerName() + " has " + customerAppointments.size() + " appointments");
 
-            for (Appointment a : customerAppointments)
+            for (Appointment apt : customerAppointments)
             {
-                // >>----->  get appointment start/end times   <-----<<
-                LocalDateTime thisAppointmentStart = a.getAppointmentStart();
-                LocalDateTime thisAppointmentEnd = a.getAppointmentEnd();
+                //getting start and end times for appointment
+                LocalDateTime thisAppointmentStart = apt.getAppointmentStart();
+                LocalDateTime thisAppointmentEnd = apt.getAppointmentEnd();
 
                 System.out.println("This appointment start/end : " + thisAppointmentStart + " - " + thisAppointmentEnd);
                 System.out.println("Requested start/end : " + requestStartLocalDateTime + " - " + requestEndLocalDateTime);
 
-                // >>----->  check start times   <-----<<
+                //checking start times
                 if (requestStartLocalDateTime.equals(thisAppointmentStart) ||
-//                        (requestedStartLDT.equals(thisAppointmentEnd)) ||         //   commented out if back to back appointments not allowed
                         (requestStartLocalDateTime.isAfter(thisAppointmentStart) && requestStartLocalDateTime.isBefore(thisAppointmentEnd)))
                 {
-                    System.out.println("This appointment start time/date conflicts with existing appointment ID " + a.getAppointmentID());
+                    System.out.println("This appointment start time/date conflicts with existing appointment ID " + apt.getAppointmentID());
                     return 1;
                 }
-                // >>----->  check end times   <-----<<
+                //checking end times
                 else if (requestEndLocalDateTime.equals(thisAppointmentEnd) ||
-//                        (requestedEndLDT.equals(thisAppointmentStart)) ||         //   commented out if back to back appointments not allowed
                         ((requestEndLocalDateTime.isAfter(thisAppointmentStart) && requestEndLocalDateTime.isBefore(thisAppointmentEnd))))
                 {
-                    System.out.println("This appointment end time/date conflicts with existing appointment ID " + a.getAppointmentID());
+                    System.out.println("This appointment end time/date conflicts with existing appointment ID " + apt.getAppointmentID());
                     return 2;
                 }
-                // >>----->  check if requested times encompass an existing appointment  <-----<<
+                //checking if created appointment clashes with an ongoing appointment
                 else if (requestStartLocalDateTime.isBefore(thisAppointmentStart) && requestEndLocalDateTime.isAfter(thisAppointmentEnd))
                 {
-                    System.out.println("Appointment ID " + a.getAppointmentID() + " is during the requested start/end time.");
+                    System.out.println("Appointment ID " + apt.getAppointmentID() + " is during the requested start/end time.");
                     return 3;
                 }
 
             }
-            // >>----->  customer has appointments but no conflicts found   <-----<<
-            System.out.println(customer.getCustomerName() + " has appointments today, but no conflicts detected.");
+            //no issues detected
+            System.out.println(customer.getCustomerName() + " has appointments today, no issues detected.");
         }
 
-        // >>----->  customer has no appointments   <-----<<
-        else //if (!customer.hasAppointments())
+        //if a customer has no appointments
+        else
         {
-            System.out.println(customer.getCustomerName() + " has no appointments. Adding this appointment.");
+            System.out.println(customer.getCustomerName() + " has no appointments. Adding new appointment.");
         }
         return 4;
     }

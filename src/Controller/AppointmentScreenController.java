@@ -1,11 +1,9 @@
 package Controller;
 
-import DAO.DBAppointments;
-import DAO.DBContacts;
-import DAO.DBCountries;
+import DAO.DAOAppointments;
+import DAO.DAOContacts;
 import Models.Appointment;
 import Models.Contact;
-import Models.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -102,7 +100,7 @@ public class AppointmentScreenController implements Initializable {
     //System.out.println(timeFilter);
     //System.out.println(contactFilter);
 
-        appointment_TableView.setItems(DBAppointments.getFilteredAppointments(filteredTime, filteredContact));
+        appointment_TableView.setItems(DAOAppointments.getFilteredAppointments(filteredTime, filteredContact));
     }
 
     /**
@@ -116,7 +114,7 @@ public class AppointmentScreenController implements Initializable {
     void onActionResetButton(ActionEvent event) throws IOException
     {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/AppointmentsMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -150,7 +148,7 @@ public class AppointmentScreenController implements Initializable {
     {
         System.out.println("Add button selected");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/AddAppointment.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/AddAppointmentMenu.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -218,9 +216,9 @@ public class AppointmentScreenController implements Initializable {
                 Optional<ButtonType> confirmation = alert.showAndWait();
 
                 if (confirmation.isPresent() && confirmation.get() == ButtonType.OK) {
-                    DBAppointments.deleteAppointment(selectedAppointment.getAppointmentID());
+                    DAOAppointments.deleteAppointment(selectedAppointment.getAppointmentID());
 
-                    ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
+                    ObservableList<Appointment> allAppointments = DAOAppointments.getAllAppointments();
                     appointment_TableView.setItems(allAppointments);
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
@@ -255,7 +253,7 @@ public class AppointmentScreenController implements Initializable {
     {
         //initializing screen
         try {
-            ObservableList<Contact> allContacts = DBContacts.getAllContacts();
+            ObservableList<Contact> allContacts = DAOContacts.getAllContacts();
             ObservableList<String> contactNames = FXCollections.observableArrayList();
 
             //lambda1
@@ -271,7 +269,7 @@ public class AppointmentScreenController implements Initializable {
             time_cbox.setItems(timeFilters);
 
             //populating appointment_TableView and its columns
-            appointment_TableView.setItems(DBAppointments.getAllAppointments());
+            appointment_TableView.setItems(DAOAppointments.getAllAppointments());
 
             AppointmentID_col.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
             title_col.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));

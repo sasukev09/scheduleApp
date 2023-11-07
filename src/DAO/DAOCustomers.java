@@ -13,12 +13,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
- * This class manages all database exchanges associated with Customer data.
+ * This class manages all database actions related with Customer data.
  */
-public class DBCustomers {
+public class DAOCustomers {
 
     /**
-     * This method returns a list of all customers in database.
+     * This method returns a list of all customers in the database.
      * By using a Prepared statement, this method executes a database query to retrieve all customers stored in the database.
      * Each tuple retrieved is used to create a Customer object which is added to a list and finally returned.
      *
@@ -48,7 +48,6 @@ public class DBCustomers {
             }
 
         }
-
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
@@ -58,7 +57,7 @@ public class DBCustomers {
     }
 
     /**
-     * This method is a getter, returns Customer object from database that matches specified customer ID number.
+     * This method is a getter, returns Customer object from database that matches with specified customer ID number.
      * By using a prepared statement, this method queries the database for customer data that matches user specified customer ID number.
      * @param customer_ID ID number of customer
      * @return Returns customer object identified by customer_ID.
@@ -89,20 +88,17 @@ public class DBCustomers {
                 newCustomer = new Customer(customerID, customerName, customerAddress, divisionID, customerPostalCode, customerPhone);
 
             }
-
         }
-
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
         }
         return newCustomer;
-
     }
 
 
     /**
-     * This method inserts new customer into customers table in the database.
+     * This method inserts new customer into customers table into the database
      * A prepared statement is used to insert a new customer into the customers table of the database.
      *
      * @param customerName name of customer
@@ -114,19 +110,18 @@ public class DBCustomers {
      */
     public static void addNewCustomer(String customerName, String customerAddress, String postalCode, String phone, String divisionName) throws SQLException
     {
-        ObservableList<Division> divisionList = DBDivisions.getAllDivisions();
+        ObservableList<Division> divisionList = DAODivisions.getAllDivisions();
 
         int divisionID = 0;
 
-        for (Division d : divisionList)
+        for (Division newDivision : divisionList)
         {
-            if (d.getDivisionName().equals(divisionName))
+            if (newDivision.getDivisionName().equals(divisionName))
             {
-                divisionID = d.getDivisionID();
+                divisionID = newDivision.getDivisionID();
             }
         }
-
-//        String sql = "INSERT INTO customers VALUES (NULL, '" + customerName + "', '" + customerAddress + "', '" + postalCode + "', '" + phone + "', NOW(), 'TEST', NOW(), 'TEST', " + divisionID + ")";
+        //String sql = "INSERT INTO customers VALUES (NULL, '" + customerName + "', '" + customerAddress + "', '" + postalCode + "', '" + phone + "', NOW(), 'TEST', NOW(), 'TEST', " + divisionID + ")";
         String sql = "INSERT INTO customers VALUES (NULL, ?, ?, ?, ?, NOW(), ?, NOW(), ?, ?)";
 
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -139,15 +134,15 @@ public class DBCustomers {
         ps.setString(6, LoginScreenController.authorizedUser.getUserName());
         ps.setInt(7, divisionID);
 
-        System.out.println(sql);        //  TEST PRINT
-
+        //testing
+        //System.out.println(sql);
         ps.execute();
 
     }
 
 
     /**
-     * This method updates existing customer data in the database.
+     * This method updates existing customer data from the database.
      * By using a prepared statement, customer data in the customers table is updated.
      *
      * @param customerID customer ID number
@@ -161,7 +156,7 @@ public class DBCustomers {
      */
     public static void modifyCustomer(int customerID, String name, String address, String postalCode, String phone, int divisionID) throws SQLException
     {
-        ObservableList<Division> divisionList = DBDivisions.getAllDivisions();
+        ObservableList<Division> divisionList = DAODivisions.getAllDivisions();
 
         String sql = ("UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = NOW(), Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?");
 
@@ -175,20 +170,18 @@ public class DBCustomers {
         ps.setInt(6, divisionID);
         ps.setInt(7, customerID);
 
-        System.out.println(sql);        //  TEST PRINT
-
+        //test
+        //System.out.println(sql);
         ps.execute();
 
     }
 
-
     /**
-     * This method deletes customer data from the database.
+     * This method deletes customer data from database.
      * By using a prepared statement, customer data specified by customerID is deleted from the customers table of the database.
      * @param customerID ID number of customer
      * @throws SQLException In the event of an SQL error.
      */
-    //      ------------------------------------------------------------------
     public static void deleteCustomer(int customerID) throws SQLException {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
 
@@ -199,7 +192,4 @@ public class DBCustomers {
         ps.execute();
 
     }
-
-
-
 }

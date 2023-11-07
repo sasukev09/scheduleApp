@@ -11,7 +11,7 @@ import java.sql.*;
 /**
  * This class manages all database exchanges associated with User data.
  */
-public class DBUsers {
+public class DAOUsers {
 
     /**
      * This method returns a list of all users in database.

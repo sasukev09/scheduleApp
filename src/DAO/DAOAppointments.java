@@ -16,9 +16,9 @@ import java.time.*;
 import java.time.temporal.ChronoField;
 
 /**
- * This class manages all database exchanges associated with Appointment data.
+ * This class manages all database actions related with Appointment data.
  */
-public class DBAppointments {
+public class DAOAppointments {
 
     /**
      * This method returns a list of all appointments in database.
@@ -45,7 +45,7 @@ public class DBAppointments {
                 String location = rs.getString("Location");
                 String type = rs.getString("Type");
 
-                //   --------------------------------   type LocalDateTime?   ----------------------------------------
+                //Localdatetime variables for the timestamps of appointment creation
                 LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
 
@@ -53,13 +53,11 @@ public class DBAppointments {
                 int userID = rs.getInt("User_ID");
                 int contactID = rs.getInt("Contact_ID");
 
-
                 Appointment newAppointment = new Appointment(apptID, title, description, location, type, start, end, customerID, userID, contactID);
 
                 appointmentsList.add(newAppointment);
             }
         }
-
         catch (SQLException throwables)
         {
             throwables.printStackTrace();
@@ -83,7 +81,6 @@ public class DBAppointments {
                 "INNER JOIN first_level_divisions ON customers.Division_ID = first_level_divisions.Division_ID " +
                 "WHERE  customers.Division_ID = first_level_divisions.Division_ID " +
                 "GROUP BY first_level_divisions.Division_ID ORDER BY first_level_divisions.Division";
-
         try
         {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
@@ -94,9 +91,8 @@ public class DBAppointments {
                 String division = rs.getString(1);
                 int customerCount = rs.getInt(2);
 
-                ReportByDivision rd = new ReportByDivision(division, customerCount);
-
-                customersByDivision.add(rd);
+                ReportByDivision ReportDiv = new ReportByDivision(division, customerCount);
+                customersByDivision.add(ReportDiv);
             }
 
         }
@@ -118,42 +114,41 @@ public class DBAppointments {
      */
     public static ObservableList<ReportByMonthType> getReportsByMonthType()
     {
-        ObservableList<ReportByMonthType> numAppointmentsMonthType = FXCollections.observableArrayList();
+        ObservableList<ReportByMonthType> reportMonthTypeList = FXCollections.observableArrayList();
 
         String sql = "SELECT MONTHNAME(Start) AS Month_Name, Type, count(*) AS Type_Count, month(Start) AS Month " +
                 "FROM appointments GROUP BY Month, Month_Name, Type ORDER BY Month";
-
         try
         {
             PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
-            ResultSet rs = ps.executeQuery();
+            ResultSet resultS = ps.executeQuery();
 
-            while (rs.next())
+            while (resultS.next())
             {
-                String month = rs.getString(1);
-                String type = rs.getString(2);
-                int count = rs.getInt(3);
-                int monthNum = rs.getInt(4);        //   >>-----> Only used for sorting purposes in query
+                String month = resultS.getString(1);
+                String type = resultS.getString(2);
+                int count = resultS.getInt(3);
+                //used for sorting purpose in query
+                int monthNum = resultS.getInt(4);
 
-                ReportByMonthType r = new ReportByMonthType(month, type, count);
+                ReportByMonthType finalReport = new ReportByMonthType(month, type, count);
 
-                numAppointmentsMonthType.add(r);
+                reportMonthTypeList.add(finalReport);
 
             }
         }
-
         catch (Exception e)
         {
             e.printStackTrace();
         }
 
-        return numAppointmentsMonthType;
+        return reportMonthTypeList;
     }
 
 
     /**
      * This method filters the appointments tableview in the Appointments screen.
-     * User input is gathered from comboboxes for time and contact.
+     * User input is gathered from combo boxes for time and contact.
      * A series of conditional statements selects the desired data indicated by user selection(s).
      * @param time Time specification - All, Current Week, or Current Month.
      * @param contact Name of contact.
@@ -162,44 +157,43 @@ public class DBAppointments {
      */
     public static ObservableList<Appointment> getFilteredAppointments(String time, String contact) throws NullPointerException
     {
-        ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
-        ObservableList<Appointment> tempAppointments = FXCollections.observableArrayList();
+        ObservableList<Appointment> allAppointments = DAOAppointments.getAllAppointments();
+        ObservableList<Appointment> temporaryAppointments = FXCollections.observableArrayList();
         ObservableList<Appointment> filteredAppointments = FXCollections.observableArrayList();
 
-        //   ----->   find current week number of current year   <-----
+        //Get current month to get current week number of the year
         Month thisMonth = LocalDateTime.now().getMonth();
 
         LocalDateTime currentDateTime = LocalDateTime.now();
         int currentWeekOfYear = currentDateTime.get(ChronoField.ALIGNED_WEEK_OF_YEAR);
+        //testing
+        //System.out.println(currentWeekOfYear);
 
-//        System.out.println(currentWeekOfYear);    //  ******  TEST
-
-        //   ----->   establish current month start/end   <-----
+        //Get current month start and end
         LocalDateTime startCurrentMonth = LocalDateTime.of(LocalDateTime.now().getYear(), thisMonth, 1, 0, 0);
         LocalDateTime endCurrentMonth = LocalDateTime.of(LocalDate.now().getYear(), thisMonth, thisMonth.maxLength(), 23, 59);
 
-
-        //   ----->   no filters selected   <-----
+        //If no filters get selected
         if (time == null && contact == null)
         {
             return allAppointments;
         }
 
-        //   ----->   only contact filter selected   <-----
+        //If only the contact filter box is selected
         else if (time == null && contact != null)
         {
-            for (Appointment a : allAppointments)
+            for (Appointment contactAppointment : allAppointments)
             {
-                if (a.getContactName(a.getContactID()).equals(contact))
+                if (contactAppointment.getContactName(contactAppointment.getContactID()).equals(contact))
                 {
-                    filteredAppointments.add(a);
+                    filteredAppointments.add(contactAppointment);
                 }
             }
 
             return filteredAppointments;
         }
 
-        //   ----->   only time filter selected   <-----
+        //If only the week/moth filter is selected
         else if (time != null && contact == null)
         {
             if (time.equals("Current Week"))
@@ -233,26 +227,26 @@ public class DBAppointments {
             }
         }
 
-        //   ----->   if both filters selected   <-----
+        //if both filers are selected
         else if (time != null && contact != null)
         {
-            tempAppointments.clear();           //    -----   test
+            temporaryAppointments.clear();
 
-            // -----   add appointments with contact name to tempAppointments   -----
-            for (Appointment a : allAppointments)
+            //adding appointments with contact names to the temporaryList
+            for (Appointment appointmentWcontact : allAppointments)
             {
-                if (a.getContactName(a.getContactID()).equals(contact))
+                if (appointmentWcontact.getContactName(appointmentWcontact.getContactID()).equals(contact))
                 {
-                    tempAppointments.add(a);
+                    temporaryAppointments.add(appointmentWcontact);
                 }
             }
+            //test
+           // System.out.println("temporaryAppointments size = " + temporaryAppointments.size());
 
-            System.out.println("tempAppointments size = " + tempAppointments.size());       //   ----  test
-
-            //  -----   filter tempAppointments for current week   -----
+            //filter the temporaryAppointments list for current week appointments
             if (time.equals("Current Week"))
             {
-                for (Appointment a : tempAppointments)
+                for (Appointment a : temporaryAppointments)
                 {
                     if (a.getAppointmentStart().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == currentWeekOfYear)
                     {
@@ -263,23 +257,22 @@ public class DBAppointments {
                 return filteredAppointments;
             }
 
-            //  -----   filter tempAppointments for current month   -----
+            //filter temporaryAppointments list for current month
             else if (time.equals("Current Month"))
             {
-                for (Appointment a : tempAppointments)
+                for (Appointment currentMonthAppointment : temporaryAppointments)
                 {
-                    if (a.getAppointmentStart().isAfter(startCurrentMonth) && a.getAppointmentStart().isBefore(endCurrentMonth))
+                    if (currentMonthAppointment.getAppointmentStart().isAfter(startCurrentMonth) && currentMonthAppointment.getAppointmentStart().isBefore(endCurrentMonth))
                     {
-                        filteredAppointments.add(a);
+                        filteredAppointments.add(currentMonthAppointment);
                     }
                 }
-
                 return filteredAppointments;
             }
 
         }
 
-        return filteredAppointments;        //  errors if not present
+        return filteredAppointments;
     }
 
 
@@ -303,11 +296,12 @@ public class DBAppointments {
                                          String type, Timestamp start, Timestamp end, int customer_ID, int user_ID,
                                          int contact_ID) throws SQLException
     {
-
+        //reference to sql
         // Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID
         String sql = "INSERT INTO appointments VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
+        //reference to sql
         // 1 Appointment_ID - NULL
         // 2 Title
         // 3 Description
@@ -336,9 +330,8 @@ public class DBAppointments {
         ps.setInt(11, customer_ID);
         ps.setInt(12, user_ID);
         ps.setInt(13, contact_ID);
-
-//        System.out.println(sql);        //  TEST PRINT
-
+    //test
+    // System.out.println(sql);
         ps.execute();
 
     }
@@ -361,8 +354,8 @@ public class DBAppointments {
      */
     public static void modifyAppointment(String title, String description, String location, String type, Timestamp startTS, Timestamp endTS, int customerID, int userID, int contactID, int appointmentID) throws SQLException
     {
-        //  SQL Cols for reference VVV
-        //  Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID
+        //sql reference
+        //Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID
 
         String sql = ("UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = NOW(), Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?");
 
@@ -380,8 +373,8 @@ public class DBAppointments {
         ps.setInt(10, contactID);
         ps.setInt(11, appointmentID);
 
-        System.out.println(sql);        //  TEST PRINT
-
+        //test
+        //System.out.println(sql);
         ps.execute();
 
     }
@@ -394,7 +387,6 @@ public class DBAppointments {
      */
     public static void deleteAppointment(int appointmentID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
-
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setInt(1, appointmentID);
@@ -408,10 +400,8 @@ public class DBAppointments {
      * @param customerID unique ID number of customer.
      * @throws SQLException In the event of an SQL error.
      */
-
     public static void deleteCustomerAppointments(int customerID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
-
         PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setInt(1, customerID);

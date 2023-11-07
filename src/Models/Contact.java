@@ -1,8 +1,5 @@
 package Models;
 
-
-import javafx.collections.ObservableList;
-
 /**
  * This class manages Contact data.
  */
@@ -37,7 +34,7 @@ public class Contact {
     }
 
     /**
-     * This method gets the ID number of Contact object.
+     * This method gets the ID number for a Contact.
      *
      * @return ID number of contact
      */
@@ -46,47 +43,12 @@ public class Contact {
     }
 
     /**
-     * The method gets the contact name of the Contact object.
+     * The method gets the contact name for a Contact.
      *
      * @return name of contact
      */
     public String getContactName() {
         return contactName;
     }
-
-//    /**
-//     * Sets ID number of contact
-//     *
-//     * @param contactID contact ID number
-//     */
-//    public void setContactID(int contactID) {
-//        this.contactID = contactID;
-//    }
-//
-//    /**
-//     * sets name of contact
-//     *
-//     * @param contactName name of contact
-//     */
-//    public void setContactName(String contactName) {
-//        this.contactName = contactName;
-//    }
-//
-//    /**
-//     * gets contact email address
-//     * @return email address of contact
-//     */
-//    public String getContactEmail() {
-//        return contactEmail;
-//    }
-//
-//    /**
-//     * sets email address of contact
-//     *
-//     * @param contactEmail email address of contact
-//     */
-//    public void setContactEmail(String contactEmail) {
-//        this.contactEmail = contactEmail;
-//    }
 
 }
