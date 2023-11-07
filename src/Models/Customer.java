@@ -167,8 +167,8 @@ public class Customer {
     }
 
     /**
-     * This method compiles a list of all appointments with this customer.
-     * Two lists are created. One with all Appointments and one for all appointments associated with this Customer object's customer ID number.
+     * This method creates a list of all appointments with this customer.
+     * Two lists are created. One with all Appointments and one for all appointments associated with Customer object's customer ID number.
      * @return Returns list of Appointment objects where customer ID matches this customer ID.
      */
     public ObservableList<Appointment> getCustomerAppointmentList()

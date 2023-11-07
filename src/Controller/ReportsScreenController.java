@@ -83,8 +83,6 @@ public class ReportsScreenController implements Initializable {
     @FXML
     private ComboBox<String> contact_cbox;
 
-    @FXML
-    private Button mainMenuButton;
 
     /**
      * This method filters the appointments table view by contact name, received as input via the combobox dropDownContact.

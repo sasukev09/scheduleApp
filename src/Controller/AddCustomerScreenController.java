@@ -157,7 +157,7 @@ public class AddCustomerScreenController implements Initializable {
 
     /**
      * This method initializes the Add Customer screen.
-     * Here country_cbox and dropDownDivision division_cbox are populated.
+     * Here country_cbox and division_cbox are populated.
      *
      * @param url the location
      * @param resourceBundle the resources
@@ -165,7 +165,6 @@ public class AddCustomerScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        //initialize screen, populate dropDownCountry box w string values
         ObservableList<Country> allCountries = DAOCountries.getAllCountries();
         ObservableList<String> allCountriesInString = FXCollections.observableArrayList();
 

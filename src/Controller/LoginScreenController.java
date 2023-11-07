@@ -23,7 +23,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
- * This method controls the Login initial of the app.
+ * This method controls the Login Screen of the app.
  * This method determines the system default time zone setting, verifies username and password during login, and creates/updates a login activity file.
  */
 public class LoginScreenController implements Initializable {
@@ -77,7 +77,7 @@ public class LoginScreenController implements Initializable {
     private Label userloc_label;
 
     /**
-     * relays user location per system Zone ID
+     * Label for location per system Zone ID
      */
     @FXML
     private Label location_label;
@@ -100,7 +100,7 @@ public class LoginScreenController implements Initializable {
     /**
      * This method enables the user to submit username and password to login.
      * After gathering user input for username and password, this method verifies if there is data matching those submissions in the database.
-     * User login attempts are documented in login_activity.txt in the root directory.
+     * User login attempts are documented in login_activity.txt.
      *
      * @param event validates login credentials, progresses to either Main Menu or Error Message
      */

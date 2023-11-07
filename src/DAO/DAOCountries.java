@@ -50,8 +50,8 @@ public class DAOCountries {
 
     /**
      * This method queries the database for country data associated with a country ID number.
-     * By using a Prepared statement, this method executes a database query to retrieve country data stored in the database that matches the country ID number.
-     * Each tuple retrieved is used to create an Appointment object which is added to a list and finally returned.
+     * By using a Prepared statement, the method executes a database query to get country data stored in the database that matches the country ID number.
+     * Each tuple retrieved is used to create an Appointment object, added to a list and returned.
      *
      * @param countryID ID of country
      * @return Returns Country object associated with specified country ID number.

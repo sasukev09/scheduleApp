@@ -72,7 +72,7 @@ public class Tiempo {
 
 
     /**
-     * This method evaluates if the requested appointment start/end times are during business hours (8:00AM - 10:00PM EST).
+     * This method evaluates if the requested appointment start or end times are during business hours (8:00AM - 10:00PM EST).
      * @param requestedStartLDT user requested appointment start time
      * @param requestedEndLDT user requested appointment end time
      * @return Returns true if appointment start/end times are within business hours, false if not.
@@ -122,7 +122,7 @@ public class Tiempo {
     }
 
     /**
-     * This method evaluates if user created appointment date/time will overlap any existing appointments.
+     * This method evaluates if user created appointment date or time will overlap any existing appointments.
      * @param newAppointment true if this appointment is a new appointment to be added, false if modifying existing appointment
      * @param customer Customer in which appointment is being scheduled
      * @param requestStartLocalDateTime user requested appointment start date/time

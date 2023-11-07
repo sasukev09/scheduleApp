@@ -18,9 +18,9 @@ import java.sql.SQLException;
 public class DAOCustomers {
 
     /**
-     * This method returns a list of all customers in the database.
-     * By using a Prepared statement, this method executes a database query to retrieve all customers stored in the database.
-     * Each tuple retrieved is used to create a Customer object which is added to a list and finally returned.
+     * This method returns a list of all customers.
+     * By using a Prepared statement, this method executes a database query to get all customers stored in the database.
+     * Each tuple retrieved is used to create a Customer object, added to a list and then returned.
      *
      * @return Returns a list of Customer objects.
      */
@@ -57,8 +57,8 @@ public class DAOCustomers {
     }
 
     /**
-     * This method is a getter, returns Customer object from database that matches with specified customer ID number.
-     * By using a prepared statement, this method queries the database for customer data that matches user specified customer ID number.
+     * This method is a getter, returns Customer object from database that matches with customer ID number.
+     * By using a prepared statement, this method queries the database for customer data that matches user customer ID number.
      * @param customer_ID ID number of customer
      * @return Returns customer object identified by customer_ID.
      */

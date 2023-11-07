@@ -21,7 +21,7 @@ import java.util.ResourceBundle;
 public class MainMenuController implements Initializable {
 
     /**
-     * Main Menu label (title)
+     * Main Menu label
      */
     @FXML
     private Label mainMenu_Title;

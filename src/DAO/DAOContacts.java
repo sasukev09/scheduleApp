@@ -15,8 +15,8 @@ import java.sql.SQLException;
 public class DAOContacts {
 
     /**
-     * This method returns a list of all contacts in the database.
-     * By using a prepared statement, this method executes a database query to retrieve all contacts stored in the database.
+     * This method returns a list of all contacts.
+     * By using a prepared statement, the method executes a database query to get all contacts stored in the database.
      * Each tuple is retrieved and used to create a Contact object which is added to a list and finally returned.
      * @return Returns a list of Contact objects.
      */

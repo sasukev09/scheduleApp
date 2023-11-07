@@ -2,7 +2,7 @@ package Models;
 
 
 /**
- * This class manages data associated with the Report screen, specifically the Report showing appointments by month and type.
+ * This class manages data associated with the Report screen, the Report showing appointments by month and type.
  */
 public class ReportByMonthType {
     /**

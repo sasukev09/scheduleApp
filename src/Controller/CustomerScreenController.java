@@ -344,7 +344,7 @@ public class CustomerScreenController implements Initializable {
 
     /**
      * This method initializes the Customer screen.
-     * Here the comboboxes country_cbox, division_cbox, and the tableview are populated.
+     * Here the comboboxes country_cbox, division_cbox, and the customer_tableview are populated.
      *
      * Lambda 1 populates ObservableList with String values of division names
      * Lambda 2 populates ObservableList with String values of country names

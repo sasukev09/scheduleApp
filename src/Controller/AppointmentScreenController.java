@@ -208,7 +208,7 @@ public class AppointmentScreenController implements Initializable {
                 return;
             }
 
-            //confirmation for  deletion
+            //confirmation for deletion
             else {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
                 alert.setTitle("CONFIRMATION");
@@ -242,8 +242,8 @@ public class AppointmentScreenController implements Initializable {
 
     /**
      * This method initializes the Appointment screen.
-     * Here the tableview, dropDownTime and dropDownContact comboboxes are populated.
-     * LAMBDA #1 - populates list of Contact names
+     * Here the appointment_TableView, time_cbox and contact_cbox comboboxes get populated.
+     * Lambda 1 populates list of Contact names
      *
      * @param url the location
      * @param resourceBundle the resources
@@ -256,7 +256,7 @@ public class AppointmentScreenController implements Initializable {
             ObservableList<Contact> allContacts = DAOContacts.getAllContacts();
             ObservableList<String> contactNames = FXCollections.observableArrayList();
 
-            //lambda1
+            //lambda 1
             allContacts.forEach(contact -> contactNames.add(contact.getContactName()));
             contact_cbox.setItems(contactNames);
             contact_cbox.setVisibleRowCount(5);
