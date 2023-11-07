@@ -177,8 +177,9 @@ public class LoginScreenController implements Initializable {
                 {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("INFORMATION");
-                    alert.setContentText("You have no appointments in the next 15 minutes. You are scheduled for "
-                            + authorizedUser.getUserAppointmentList().size() + " appointment(s) total.");
+                    alert.setContentText("No upcoming appointments in the next 15 minutes.");
+//                            " You are scheduled for "
+//                            + authorizedUser.getUserAppointmentList().size() + " appointment(s) total."
                     alert.showAndWait();
                 }
 
@@ -233,7 +234,7 @@ public class LoginScreenController implements Initializable {
         ResourceBundle rb = ResourceBundle.getBundle("language", Locale.getDefault());
         System.out.println(rb.getString("welcome"));
 
-        //   --------------------   set GUI labels/buttons to french here   --------------------------
+        //labels from screen get turned into french
         if (Locale.getDefault().getLanguage().equals("fr"))
         {
             System.out.println("Language set to French");

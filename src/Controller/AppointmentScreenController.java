@@ -178,7 +178,7 @@ public class AppointmentScreenController implements Initializable {
         }
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/Views/ModifyAppointment.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/Views/UpdateAppointment.fxml"));
         stage.setScene(new Scene(scene));
         stage.centerOnScreen();
         stage.show();
@@ -222,7 +222,7 @@ public class AppointmentScreenController implements Initializable {
                     appointment_TableView.setItems(allAppointments);
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("");
+                    alert2.setTitle("INFORMATION");
                     alert2.setContentText("Appointment ID " + selectedAppointment.getAppointmentID() +
                             " (" + selectedAppointment.getAppointmentType() + ") with " +
                             selectedAppointment.getCustomerName(selectedAppointment.getCustomerID()) + " has been deleted.");

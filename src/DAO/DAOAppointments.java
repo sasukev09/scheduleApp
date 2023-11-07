@@ -198,11 +198,11 @@ public class DAOAppointments {
         {
             if (time.equals("Current Week"))
             {
-                for (Appointment a : allAppointments)
+                for (Appointment weekAppointment : allAppointments)
                 {
-                    if (a.getAppointmentStart().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == currentWeekOfYear)
+                    if (weekAppointment.getAppointmentStart().get(ChronoField.ALIGNED_WEEK_OF_YEAR) == currentWeekOfYear)
                     {
-                        filteredAppointments.add(a);
+                        filteredAppointments.add(weekAppointment);
                     }
                 }
 
@@ -211,16 +211,15 @@ public class DAOAppointments {
 
             else if (time.equals("Current Month"))
             {
-                for (Appointment a : allAppointments)
+                for (Appointment monthAppointment : allAppointments)
                 {
-                    if (a.getAppointmentStart().isAfter(startCurrentMonth) && a.getAppointmentStart().isBefore(endCurrentMonth))
+                    if (monthAppointment.getAppointmentStart().isAfter(startCurrentMonth) && monthAppointment.getAppointmentStart().isBefore(endCurrentMonth))
                     {
-                        filteredAppointments.add(a);
+                        filteredAppointments.add(monthAppointment);
                     }
                 }
                 return filteredAppointments;
             }
-
             else
             {
                 return allAppointments;

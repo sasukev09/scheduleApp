@@ -60,7 +60,7 @@ public class DAOCountries {
     {
         try
         {
-            System.out.println("Getting Country...");
+            System.out.println("Get Country");
 
             String sql = "SELECT * FROM countries WHERE Country_ID = " + countryID;
             String countryName = "";

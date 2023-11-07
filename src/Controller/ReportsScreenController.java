@@ -126,7 +126,7 @@ public class ReportsScreenController implements Initializable {
     /**
      * This method initializes the Reports screen.
      * The appointment, appointment by month and type, and customer by location tableviews are populated here.
-     * Lambda 1 iterates through list of all appointments, adds contact name String value to list contactNames
+     * Lambda 1 iterates through list of all appointments, adds contact name String type value to list contactNames
      *
      * @param url the location
      * @param resourceBundle the resources

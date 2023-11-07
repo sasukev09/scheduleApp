@@ -39,7 +39,6 @@ public class DAOContacts {
                 Contact newContact = new Contact(iD, name, email);
                 allContacts.add(newContact);
             }
-
         }
 
         catch (SQLException throwables)

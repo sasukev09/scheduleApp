@@ -321,7 +321,7 @@ public class CustomerScreenController implements Initializable {
                     }
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
-                    alert2.setTitle("");
+                    alert2.setTitle("INFORMATION");
                     alert2.setContentText("Customer ID " + selectedCustomer.getCustomerID() +
                             " (" + selectedCustomer.getCustomerName() + ") has been deleted.");
                     alert2.showAndWait();

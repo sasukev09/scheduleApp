@@ -71,8 +71,8 @@ public class Division {
 
         try
         {
-            Country c = DAOCountries.getCountry(countryID);
-            countryName = c.getCountryName();
+            Country country = DAOCountries.getCountry(countryID);
+            countryName = country.getCountryName();
         }
 
         catch (NullPointerException e)
