@@ -231,9 +231,9 @@ public class LoginScreenController implements Initializable {
 
         //getting resource bundle and testing
         ResourceBundle rb = ResourceBundle.getBundle("language", Locale.getDefault());
-        System.out.println(rb.getString("resource bundle obtained"));
+        System.out.println(rb.getString("welcome"));
 
-        //all GUI components to be translated in french
+        //   --------------------   set GUI labels/buttons to french here   --------------------------
         if (Locale.getDefault().getLanguage().equals("fr"))
         {
             System.out.println("Language set to French");
@@ -245,6 +245,7 @@ public class LoginScreenController implements Initializable {
             userloc_label.setText(rb.getString("user_location"));
             location_label.setText(timeZone.toString());
         }
+
         if ((Locale.getDefault().getLanguage().equals("fr")) && testing)
         {
             userloc_label.setText("!France (Test)");
