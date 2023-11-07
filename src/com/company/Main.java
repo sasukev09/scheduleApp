@@ -3,9 +3,8 @@ package com.company;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
-import Helper.DBConnection;
+import Helper.JDBC;
 import java.io.IOException;
 
 //   >>------------------------------>   Author: Steven Bennett   <------------------------------<<
@@ -47,11 +46,11 @@ public class Main extends Application {
      */
     public static void main (String[] args) throws Exception
     {
-        DBConnection.openConnection();      //  ------------------   start
+        JDBC.openConnection();      //  ------------------   start
 
         launch(args);
 
-        DBConnection.closeConnection();     //  ------------------   end
+        JDBC.closeConnection();     //  ------------------   end
     }
 
 }

@@ -30,9 +30,6 @@ import java.util.ResourceBundle;
  */
 public class AddCustomerScreenController implements Initializable {
 
-    Stage stage;
-    Parent scene;
-
     @FXML
     private ComboBox<String> country_cbox;
 
@@ -62,7 +59,8 @@ public class AddCustomerScreenController implements Initializable {
 
     @FXML
     private TextField phone_txtfield;
-
+    Stage stage;
+    Parent scene;
 
     /**
      * This method adds a new customer to the database.
@@ -87,18 +85,17 @@ public class AddCustomerScreenController implements Initializable {
         {
             System.out.println("Adding " + customerName);
 
-            //  ----->   ADD NEW CUSTOMER VIA SQL   <-----
+            //adding a new customer through sql
             DBCustomers.addNewCustomer(customerName, customerAddress, postalCode, phoneNumber, divisionName);
 
             stage = (Stage)((Button)event.getSource()).getScene().getWindow();
             scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
             stage.setScene(new Scene(scene));
-            stage.centerOnScreen();                 //  ----------------   Center Screen
+            stage.centerOnScreen();
             stage.show();
 
         }
     }
-
 
     /**
      * This method populates division_cbox combobox with the appropriate list once the user selects a value in dropDownCountry combobox.
@@ -129,17 +126,16 @@ public class AddCustomerScreenController implements Initializable {
             division_label.setText("Country/Province");
         }
 
-        for (Division d : allDivisions)
+        for (Division selectedDivision : allDivisions)
         {
-            if (d.getCountryName(d.getCountryID()).equals(countryName))
+            if (selectedDivision.getCountryName(selectedDivision.getCountryID()).equals(countryName))
             {
-                filteredDivisionNames.add(d.getDivisionName());
+                filteredDivisionNames.add(selectedDivision.getDivisionName());
             }
         }
 
         division_cbox.setItems(filteredDivisionNames);
     }
-
 
     /**
      * This method returns the user to the previous screen (Customers screen).
@@ -155,10 +151,9 @@ public class AddCustomerScreenController implements Initializable {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
     }
-
 
     /**
      * This method initializes the Add Customer screen.
@@ -170,21 +165,18 @@ public class AddCustomerScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        // initialize screen, populate dropDownCountry box w string values
+        //initialize screen, populate dropDownCountry box w string values
         ObservableList<Country> allCountries = DBCountries.getAllCountries();
-        ObservableList<String> allCountriesString = FXCollections.observableArrayList();
+        ObservableList<String> allCountriesInString = FXCollections.observableArrayList();
 
-        allCountries.forEach(country -> allCountriesString.add(country.toString()));
+        allCountries.forEach(country -> allCountriesInString.add(country.toString()));
 
-        country_cbox.setItems(allCountriesString);
-        country_cbox.setVisibleRowCount(5);              //   Limit dropdown box row count to 5
+        country_cbox.setItems(allCountriesInString);
+        country_cbox.setVisibleRowCount(5);
 
         division_cbox.getSelectionModel().clearSelection();
-        division_cbox.setVisibleRowCount(5);              //   Limit dropdown box row count to 5
+        division_cbox.setVisibleRowCount(5);
 
-        CustomerID_textfield.setPromptText("Auto Generated");
+        CustomerID_textfield.setPromptText("Auto-Gen");
     }
-
-
-
 }

@@ -1,7 +1,7 @@
 package DAO;
 
 
-import Helper.DBConnection;
+import Helper.JDBC;
 import Models.Country;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +26,7 @@ public class DBCountries {
 
         try {
             String sql = "SELECT * FROM countries";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -64,7 +64,7 @@ public class DBCountries {
 
             String sql = "SELECT * FROM countries WHERE Country_ID = " + countryID;
             String countryName = "";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())

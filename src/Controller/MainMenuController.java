@@ -20,9 +20,6 @@ import java.util.ResourceBundle;
  */
 public class MainMenuController implements Initializable {
 
-    Stage stage;
-    Parent scene;
-
     /**
      * Main Menu label (title)
      */
@@ -33,25 +30,28 @@ public class MainMenuController implements Initializable {
      * Button to open Appointments screen
      */
     @FXML
-    private Button appointmentsButton;
+    private Button appointments_button;
 
     /**
      * Button to open Customers screen
      */
     @FXML
-    private Button customersButton;
+    private Button customers_button;
 
     /**
      * Button to open Reports Screen
      */
     @FXML
-    private Button reportsButton;
+    private Button reports_button;
 
     /**
      * Button to exit app
      */
     @FXML
-    private Button exitButton;
+    private Button exit_button;
+
+    Stage stage;
+    Parent scene;
 
     /**
      * This method opens the Appointments screen.
@@ -60,13 +60,11 @@ public class MainMenuController implements Initializable {
     @FXML
     void onActionAppointmentButton(ActionEvent event) throws IOException {
         System.out.println("Appointments button pressed");
-
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
-
     }
 
     /**
@@ -80,7 +78,7 @@ public class MainMenuController implements Initializable {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -94,7 +92,7 @@ public class MainMenuController implements Initializable {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Reports.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -104,7 +102,7 @@ public class MainMenuController implements Initializable {
      * @param event Executes when the Exit button is pressed.
      */
     @FXML
-    void onActionExit(ActionEvent event)
+    void onActionExitButton(ActionEvent event)
     {
         System.out.println("Exit Button pressed");
         System.exit(0);
@@ -118,7 +116,6 @@ public class MainMenuController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        // initialize screen
     }
 
 }

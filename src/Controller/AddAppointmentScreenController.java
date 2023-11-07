@@ -33,9 +33,6 @@ import java.util.ResourceBundle;
  */
 public class AddAppointmentScreenController implements Initializable {
 
-    Stage stage;
-    Parent scene;
-
     @FXML
     private Button add_button;
 
@@ -80,6 +77,8 @@ public class AddAppointmentScreenController implements Initializable {
 
     @FXML
     private TextField userName_txtfield;
+    Stage stage;
+    Parent scene;
 
     /**
      * This method takes the user input from customerID_cbox combobox, updates customerName_txtfield with name of customer.
@@ -178,7 +177,7 @@ public class AddAppointmentScreenController implements Initializable {
         String startDate = start_datepick.getValue().format(dateMonthDay);
         String endDate = end_datepick.getValue().format(dateMonthDay);
 
-        //converting
+        //timestamp variables from string time date
         Timestamp startTimeStamp = Tiempo.convertStringTimeDate2TimeStamp(startTime, startDate);
         Timestamp endTimeStamp = Tiempo.convertStringTimeDate2TimeStamp(endTime, endDate);
 
@@ -302,9 +301,9 @@ public class AddAppointmentScreenController implements Initializable {
     /**
      * This method initializes the Add Appointment screen. Here the starttime_cbox, endtime_cbox, contact_cbox, customerID_cbox, and userID_cbox comboboxes are populated.
      *
-     * lambda #1 - populates Observable list allExistingContacts with String values of contact name
-     * lambda #2 - populates Observable list customerIDs with String values of customer ID numbers.
-     * lambda #3 - populates Observable list userIDs with String values of user ID numbers.
+     * lambda 1 populates Observable list allExistingContacts with String values of contact name
+     * lambda 2 populates Observable list customerIDs with String values of customer ID numbers.
+     * lambda 3 populates Observable list userIDs with String values of user ID numbers.
      *
      * @param url the location
      * @param resourceBundle the resources
@@ -332,6 +331,7 @@ public class AddAppointmentScreenController implements Initializable {
             //lambda expression 2
             allExistingCustomers.forEach(customer -> customerIDs.add(String.valueOf(customer.getCustomerID())));
 
+            //setting items in combo box and the row count of the drop down list
             customerID_cbox.setItems(customerIDs);
             customerID_cbox.setVisibleRowCount(5);
 
@@ -343,23 +343,27 @@ public class AddAppointmentScreenController implements Initializable {
             //lambda expression 3
             allUsers.forEach(user -> userIDs.add(String.valueOf(user.getUserID())));
 
+            //setting items in combo box and the row count of the drop down list
             userID_cbox.setItems(userIDs);
             userID_cbox.setVisibleRowCount(5);
 
 
             //populates starttime_cbox
             //the appointment time range is 8am to 10pm EST
+            //setting timezones to EST
             ObservableList<String> startTimes = FXCollections.observableArrayList();
 
-            LocalDateTime beginningStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));     // ---   8:00 am earliest start time
-            beginningStartEST = Tiempo.attachESTTimeZone(beginningStartEST);                                   // ---   set timezone to EST
+            LocalDateTime beginningStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 0));
+            beginningStartEST = Tiempo.attachESTTimeZone(beginningStartEST);
 
-            LocalDateTime earliestStartLocalTime = Tiempo.convertESTToLocalTimeZone(beginningStartEST);       // ---   set variable to LDT equivalent
+            // setting variable to local time equivalent
+            LocalDateTime earliestStartLocalTime = Tiempo.convertESTToLocalTimeZone(beginningStartEST);
 
-            LocalDateTime lateStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 45));     // ---   9:45 pm latest start time
-            lateStartEST = Tiempo.attachESTTimeZone(lateStartEST);                                       // ---   set timezone to EST
+            LocalDateTime lateStartEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(21, 45));
+            lateStartEST = Tiempo.attachESTTimeZone(lateStartEST);
 
-            LocalDateTime latestStartLocalTime = Tiempo.convertESTToLocalTimeZone(lateStartEST);           // ---   set variable to LDT equivalent
+            // setting variable to local time equivalent
+            LocalDateTime latestStartLocalTime = Tiempo.convertESTToLocalTimeZone(lateStartEST);
 
             //adding start times to list
             while (earliestStartLocalTime.isBefore(latestStartLocalTime.plusMinutes(1)))
@@ -374,17 +378,20 @@ public class AddAppointmentScreenController implements Initializable {
 
             //populating endtime_cbox
             //appointment time range is 8am to 10pm EST
+            //setting timezones to EST
             ObservableList<String> endTimes = FXCollections.observableArrayList();
 
-            LocalDateTime earliestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 15));      // ---   8:15 am latest start time
-            earliestEndEST = Tiempo.attachESTTimeZone(earliestEndEST);                                       // ---   set timezone to EST
+            LocalDateTime earliestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(8, 15));
+            earliestEndEST = Tiempo.attachESTTimeZone(earliestEndEST);
 
-            LocalDateTime earliestEndLocalTime = Tiempo.convertESTToLocalTimeZone(earliestEndEST);           // ---   set variable to local time equivalent
+            // setting variable to local time equivalent
+            LocalDateTime earliestEndLocalTime = Tiempo.convertESTToLocalTimeZone(earliestEndEST);
 
-            LocalDateTime latestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));        // ---   10:00 pm latest end time
-            latestEndEST = Tiempo.attachESTTimeZone(latestEndEST);                                           // ---   set timezone to EST
+            LocalDateTime latestEndEST = LocalDateTime.of(LocalDate.now(), LocalTime.of(22, 0));
+            latestEndEST = Tiempo.attachESTTimeZone(latestEndEST);
 
-            LocalDateTime latestEndLocalTime = Tiempo.convertESTToLocalTimeZone(latestEndEST);               // ---   set variable to local time equivalent
+            // setting variable to local time equivalent
+            LocalDateTime latestEndLocalTime = Tiempo.convertESTToLocalTimeZone(latestEndEST);
 
             //adding end times to list
             while (earliestEndLocalTime.isBefore(latestEndLocalTime.plusMinutes(1)))

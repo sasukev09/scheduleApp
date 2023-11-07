@@ -26,104 +26,100 @@ import java.util.ResourceBundle;
 
 /**
  * This class controls the Appointment screen.
- * The Appointment screen allows the user to view and filter all appointments, add/modify/delete appointments.
+ * It allows the user to view and filter all appointments, add, update or delete appointments.
  */
 public class AppointmentScreenController implements Initializable {
 
-    Stage stage;
-    Parent scene;
-    static Appointment selectedAppointment;
-
+    @FXML
+    private TableView<Appointment> appointment_TableView;
 
     @FXML
-    private TableView<Appointment> appointmentTableView;
+    private TableColumn<?, ?> AppointmentID_col;
 
     @FXML
-    private TableColumn<?, ?> columnAppointmentID;
+    private TableColumn<?, ?> contact_Column;
 
     @FXML
-    private TableColumn<?, ?> columnContact;
+    private TableColumn<?, ?> customer_Column;
 
     @FXML
-    private TableColumn<?, ?> columnCustomer;
+    private TableColumn<?, ?> description_col;
 
     @FXML
-    private TableColumn<?, ?> columnDescription;
+    private TableColumn<?, ?> end_Col;
 
     @FXML
-    private TableColumn<?, ?> columnEnd;
+    private TableColumn<?, ?> location_col;
 
     @FXML
-    private TableColumn<?, ?> columnLocation;
+    private TableColumn<?, ?> start_column;
 
     @FXML
-    private TableColumn<?, ?> columnStart;
+    private TableColumn<?, ?> title_col;
 
     @FXML
-    private TableColumn<?, ?> columnTitle;
+    private TableColumn<?, ?> type_col;
 
     @FXML
-    private TableColumn<?, ?> columnType;
+    private TableColumn<?, ?> user_Col;
 
     @FXML
-    private TableColumn<?, ?> columnUser;
+    private ComboBox<String> contact_cbox;
 
     @FXML
-    private ComboBox<String> dropDownContact;
+    private ComboBox<String> time_cbox;
 
     @FXML
-    private ComboBox<String> dropDownTime;
-
-    @FXML
-    private Button applyButton;
+    private Button apply_Button;
 
     @FXML
     private Button back_button;
 
     @FXML
-    private Button addAppointmentButton;
+    private Button add_Button;
 
     @FXML
-    private Button modifyAppointmentButton;
+    private Button update_button;
 
     @FXML
-    private Button deleteAppointmentButton;
+    private Button delete_button;
+    Stage stage;
+    Parent scene;
+    static Appointment selectedAppointment;
 
     /**
      * This method applies user selected filters to data displayed in tableview.
-     * User input is gathered from dropDownTime and dropDownContact comboboxes and used as arguments (filters) when retrieving appointments from the database.
+     * User input is gathered from time_cbox and contact_cbox comboboxes and used as arguments (filters) when getting appointments from the database.
      * The tableview is automatically updated.
      * @param event Executes when the user presses the Apply button.
      */
     @FXML
-    void onActionApplyFilters(ActionEvent event) {
-        String timeFilter = dropDownTime.getValue();
-        String contactFilter = dropDownContact.getValue();
+    void onActionApplyButton(ActionEvent event) {
+        String filteredTime = time_cbox.getValue();
+        String filteredContact = contact_cbox.getValue();
 
-        //  ----------------   test drop down inputs  -----------------------
-//        System.out.println(timeFilter);
-//        System.out.println(contactFilter);
+        //testing inputs
+    //System.out.println(timeFilter);
+    //System.out.println(contactFilter);
 
-        appointmentTableView.setItems(DBAppointments.getFilteredAppointments(timeFilter, contactFilter));
-
+        appointment_TableView.setItems(DBAppointments.getFilteredAppointments(filteredTime, filteredContact));
     }
 
     /**
-     * The method resets the dropDownTime and dropDownContact comboboxes to their respective original prompts and null values.
+     * The method resets the time_cbox and contact_cbox comboboxes to their respective original prompts and null values.
      * The tableview is updated automatically.
      *
      * @param event Executes when the user presses the reset button.
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionResetFilter(ActionEvent event) throws IOException
+    void onActionResetButton(ActionEvent event) throws IOException
     {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Appointments.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
-
     }
 
     /**
@@ -138,7 +134,7 @@ public class AppointmentScreenController implements Initializable {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -150,17 +146,14 @@ public class AppointmentScreenController implements Initializable {
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionAddAppointment(ActionEvent event) throws IOException
+    void onActionAddButton(ActionEvent event) throws IOException
     {
-        System.out.println("Add appointment selected");
-
-
+        System.out.println("Add button selected");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/AddAppointment.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
-
     }
 
     /**
@@ -170,13 +163,13 @@ public class AppointmentScreenController implements Initializable {
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionModifyAppointment(ActionEvent event) throws IOException
+    void onActionUpdateButton (ActionEvent event) throws IOException
     {
-        System.out.println("Modify appointment selected");
+        System.out.println("Update button selected");
 
-        selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+        selectedAppointment = appointment_TableView.getSelectionModel().getSelectedItem();
 
-        //   confirm there is an appointment selected
+        //confirmation that there is an appointment selected
         if (selectedAppointment == null)
         {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -189,7 +182,7 @@ public class AppointmentScreenController implements Initializable {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/ModifyAppointment.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -202,13 +195,13 @@ public class AppointmentScreenController implements Initializable {
      * @throws SQLException In the event of an SQL error.
      */
     @FXML
-    void onActionDeleteAppointment(ActionEvent event) throws IOException, SQLException {
+    void onActionDeleteButton(ActionEvent event) throws IOException, SQLException {
         System.out.println("Delete appointment selected");
-        selectedAppointment = appointmentTableView.getSelectionModel().getSelectedItem();
+        selectedAppointment = appointment_TableView.getSelectionModel().getSelectedItem();
 
 
         try {
-            //   confirm there is an appointment selected
+            //confirmation that there is an appointment selected
             if (selectedAppointment == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
@@ -217,10 +210,10 @@ public class AppointmentScreenController implements Initializable {
                 return;
             }
 
-            //   confirm deletion
+            //confirmation for  deletion
             else {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("CONFIRM DELETE");
+                alert.setTitle("CONFIRMATION");
                 alert.setContentText("Are you sure you want to delete?");
                 Optional<ButtonType> confirmation = alert.showAndWait();
 
@@ -228,11 +221,11 @@ public class AppointmentScreenController implements Initializable {
                     DBAppointments.deleteAppointment(selectedAppointment.getAppointmentID());
 
                     ObservableList<Appointment> allAppointments = DBAppointments.getAllAppointments();
-                    appointmentTableView.setItems(allAppointments);
+                    appointment_TableView.setItems(allAppointments);
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("");
-                    alert2.setContentText("Appointment ID #" + selectedAppointment.getAppointmentID() +
+                    alert2.setContentText("Appointment ID " + selectedAppointment.getAppointmentID() +
                             " (" + selectedAppointment.getAppointmentType() + ") with " +
                             selectedAppointment.getCustomerName(selectedAppointment.getCustomerID()) + " has been deleted.");
                     alert2.showAndWait();
@@ -260,36 +253,36 @@ public class AppointmentScreenController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        // initialize screen
+        //initializing screen
         try {
             ObservableList<Contact> allContacts = DBContacts.getAllContacts();
             ObservableList<String> contactNames = FXCollections.observableArrayList();
 
-            //  --->   LAMBDA expression #1  <---
+            //lambda1
             allContacts.forEach(contact -> contactNames.add(contact.getContactName()));
-            dropDownContact.setItems(contactNames);
-            dropDownContact.setVisibleRowCount(5);
+            contact_cbox.setItems(contactNames);
+            contact_cbox.setVisibleRowCount(5);
 
-            //  --->   Populate dropDownTime  <---
+            //populating time_cbox
             ObservableList<String> timeFilters = FXCollections.observableArrayList();
 //            timeFilters.add("All");
             timeFilters.add("Current Week");
             timeFilters.add("Current Month");
-            dropDownTime.setItems(timeFilters);
+            time_cbox.setItems(timeFilters);
 
-            //  --->   Populate appointmentTableView and columns  <---
-            appointmentTableView.setItems(DBAppointments.getAllAppointments());
+            //populating appointment_TableView and its columns
+            appointment_TableView.setItems(DBAppointments.getAllAppointments());
 
-            columnAppointmentID.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
-            columnTitle.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));
-            columnDescription.setCellValueFactory(new PropertyValueFactory<>("appointmentDescription"));
-            columnLocation.setCellValueFactory(new PropertyValueFactory<>("appointmentLocation"));
-            columnType.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
-            columnStart.setCellValueFactory(new PropertyValueFactory<>("appointmentStart"));
-            columnEnd.setCellValueFactory(new PropertyValueFactory<>("appointmentEnd"));
-            columnCustomer.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-            columnUser.setCellValueFactory(new PropertyValueFactory<>("userID"));
-            columnContact.setCellValueFactory(new PropertyValueFactory<>("contactID"));
+            AppointmentID_col.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
+            title_col.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));
+            description_col.setCellValueFactory(new PropertyValueFactory<>("appointmentDescription"));
+            location_col.setCellValueFactory(new PropertyValueFactory<>("appointmentLocation"));
+            type_col.setCellValueFactory(new PropertyValueFactory<>("appointmentType"));
+            start_column.setCellValueFactory(new PropertyValueFactory<>("appointmentStart"));
+            end_Col.setCellValueFactory(new PropertyValueFactory<>("appointmentEnd"));
+            customer_Column.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            user_Col.setCellValueFactory(new PropertyValueFactory<>("userID"));
+            contact_Column.setCellValueFactory(new PropertyValueFactory<>("contactID"));
         }
 
         catch (Exception e)

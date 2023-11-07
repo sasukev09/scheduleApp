@@ -9,7 +9,7 @@ import java.sql.SQLException;
 /**
  * This class manages the database connection.
  */
-public abstract class DBConnection {
+public abstract class JDBC {
 
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";

@@ -6,7 +6,6 @@ import DAO.DBDivisions;
 import Models.Country;
 import Models.Customer;
 import Models.Division;
-import Controller.LoginScreenController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -30,71 +29,70 @@ import java.util.ResourceBundle;
  * This class controls the Modify Customer screen.
  * The Modify Customer screen enables the user to modify and update existing customer data in the database.
  */
-public class ModifyCustomerScreenController implements Initializable{
+public class UpdateCustomerScreenController implements Initializable{
+    @FXML
+    private Button cancel_button;
+
+    @FXML
+    private ComboBox<String> country_cbox;
+
+    @FXML
+    private ComboBox<String> division_cbox;
+
+    @FXML
+    private Label division_label;
+
+    @FXML
+    private TextField address_txtfield;
+
+    @FXML
+    private TextField customerid_txtfield;
+
+    @FXML
+    private TextField name_txtfield;
+
+    @FXML
+    private TextField phone_txtfield;
+
+    @FXML
+    private TextField postal_txtfield;
+
+    @FXML
+    private Button update_button;
 
     Stage stage;
     Parent scene;
     Customer selectedCustomer;
 
-    @FXML
-    private Button cancelButton;
-
-    @FXML
-    private ComboBox<String> dropDownCountry;
-
-    @FXML
-    private ComboBox<String> dropDownDivision;
-
-    @FXML
-    private Label labelDivision;
-
-    @FXML
-    private TextField textFieldAddress;
-
-    @FXML
-    private TextField textFieldCustomerID;
-
-    @FXML
-    private TextField textFieldCustomerName;
-
-    @FXML
-    private TextField textFieldPhone;
-
-    @FXML
-    private TextField textFieldPostalCode;
-
-    @FXML
-    private Button updateButton;
-
     /**
-     * This method populates dropDownDivision combobox with the appropriate list once the user selects a value in dropDownCountry combobox.
-     * The label labelDivision is also updated to the appropriate term as related to their customs.
-     * @param event Executes when user selects country from dropDownCountry combobox.
+     * This method populates division_cbox combobox with the appropriate list once the user selects a value in country_cbox combo box.
+     * The label division_label is also updated to the appropriate term as related to their customs.
+     * @param event Executes when user selects country from country_cbox combo box.
      * @throws NullPointerException In the event that a null value is unexpectedly returned.
      */
     @FXML
-    void onActionCountrySelect(ActionEvent event) throws NullPointerException
+    void onActionCountryComboBox(ActionEvent event) throws NullPointerException
     {
-        dropDownDivision.setValue("");
+        division_cbox.setValue("");
 
         ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
         ObservableList<String> filteredDivisionNames = FXCollections.observableArrayList();
 
-        String countryName = dropDownCountry.getValue();
+        String countryName = country_cbox.getValue();
 
         if (countryName.equals("U.S"))
         {
-            labelDivision.setText("State");
+            division_label.setText("State");
         }
 
         else if (countryName.equals("Canada"))
         {
-            labelDivision.setText("Province/Territory");
+            division_label.setText("Province/Territory");
         }
 
         else if (countryName.equals("UK"))
         {
-            labelDivision.setText("Country/Province");
+            division_label.setText("Country/Province");
         }
 
         for (Division d : allDivisions)
@@ -105,7 +103,7 @@ public class ModifyCustomerScreenController implements Initializable{
             }
         }
 
-        dropDownDivision.setItems(filteredDivisionNames);
+        division_cbox.setItems(filteredDivisionNames);
 
     }
 
@@ -116,13 +114,13 @@ public class ModifyCustomerScreenController implements Initializable{
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionReturnPreviousScreen(ActionEvent event) throws IOException {
+    void onActionCancelButton(ActionEvent event) throws IOException {
         System.out.println("Cancel button pressed");
 
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -137,13 +135,13 @@ public class ModifyCustomerScreenController implements Initializable{
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionUpdateCustomer(ActionEvent event) throws SQLException, IOException {
+    void onActionUpdateButton(ActionEvent event) throws SQLException, IOException {
         int customerID = selectedCustomer.getCustomerID();
-        String updatedCustomerName = textFieldCustomerName.getText();
-        String updatedCustomerAddress = textFieldAddress.getText();
-        String updatedPostalCode = textFieldPostalCode.getText();
-        String updatedCustomerPhone = textFieldPhone.getText();
-        String updatedCustomerDivision = dropDownDivision.getValue();
+        String updatedCustomerName = name_txtfield.getText();
+        String updatedCustomerAddress = address_txtfield.getText();
+        String updatedPostalCode = postal_txtfield.getText();
+        String updatedCustomerPhone = phone_txtfield.getText();
+        String updatedCustomerDivision = division_cbox.getValue();
 
         int updatedDivisionID = 0;
 
@@ -160,11 +158,11 @@ public class ModifyCustomerScreenController implements Initializable{
         DBCustomers.modifyCustomer(customerID, updatedCustomerName, updatedCustomerAddress, updatedPostalCode,
                 updatedCustomerPhone, updatedDivisionID);
 
-        //      --------------------   RETURN TO CUSTOMER SCREEN   ------------------------------------
+        //returning to customer screen
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
@@ -172,11 +170,11 @@ public class ModifyCustomerScreenController implements Initializable{
 
     /**
      * This method initializes the Modify Customer screen.
-     * Here the dropDownCountry and dropDownDivision comboboxes are populated.
-     * The label labelDivision is also updated to appropriate terminology.
+     * Here the country_cbox and division_cbox comboboxes are populated.
+     * The label division_label is also updated to its appropiate data
      *
-     * Lambda expression #1 - populates ObservableList with String values of division names
-     * Lambda expression #2 - populates ObservableList with String values of country names
+     * Lambda 1 populates ObservableList with String values of division names
+     * Lambda 2 populates ObservableList with String values of country names
      *
      * @param url the location
      * @param resourceBundle the resources
@@ -185,50 +183,48 @@ public class ModifyCustomerScreenController implements Initializable{
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         ObservableList<Country> allCountries = DBCountries.getAllCountries();
-        ObservableList<String> allCountriesString = FXCollections.observableArrayList();
+        ObservableList<String> allCountriesInString = FXCollections.observableArrayList();
 
         ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
-        ObservableList<String> allDivisionsString = FXCollections.observableArrayList();
+        ObservableList<String> allDivisionsInString = FXCollections.observableArrayList();
 
-        //  --->   LAMBDA expression #1  <---
-        allCountries.forEach(country -> allCountriesString.add(country.toString()));
+        //lambda 1
+        allCountries.forEach(country -> allCountriesInString.add(country.toString()));
 
-        //  --->   LAMBDA expression #2  <---
-        allDivisions.forEach(division -> allDivisionsString.add(division.toString()));
+        //lambda 2
+        allDivisions.forEach(division -> allDivisionsInString.add(division.toString()));
 
         selectedCustomer = CustomerScreenController.getSelectedCustomer();
         String countryName = selectedCustomer.getCustomerCountry();
 
-        textFieldCustomerID.setText(Integer.toString(selectedCustomer.getCustomerID()));
-        textFieldCustomerName.setText(selectedCustomer.getCustomerName());
-        textFieldAddress.setText(selectedCustomer.getCustomerAddress());
-        textFieldPostalCode.setText(selectedCustomer.getCustomerPostalCode());
-        textFieldPhone.setText(selectedCustomer.getCustomerPhone());
+        customerid_txtfield.setText(Integer.toString(selectedCustomer.getCustomerID()));
+        name_txtfield.setText(selectedCustomer.getCustomerName());
+        address_txtfield.setText(selectedCustomer.getCustomerAddress());
+        postal_txtfield.setText(selectedCustomer.getCustomerPostalCode());
+        phone_txtfield.setText(selectedCustomer.getCustomerPhone());
 
-        dropDownCountry.setItems(allCountriesString);
-        dropDownDivision.setItems(allDivisionsString);
+        //setting items and selected row counts in the combo boxes
+        country_cbox.setItems(allCountriesInString);
+        division_cbox.setItems(allDivisionsInString);
+        country_cbox.setVisibleRowCount(5);
+        division_cbox.setVisibleRowCount(5);
 
-        dropDownCountry.setVisibleRowCount(5);              //   Limit dropdown box row count to 5
-        dropDownDivision.setVisibleRowCount(5);              //   Limit dropdown box row count to 5
-
-
-        dropDownCountry.setValue(countryName);
-        dropDownDivision.setValue(selectedCustomer.getDivisionName());
-
+        country_cbox.setValue(countryName);
+        division_cbox.setValue(selectedCustomer.getDivisionName());
 
         if (countryName.equals("U.S"))
         {
-            labelDivision.setText("State");
+            division_label.setText("State");
         }
 
         else if (countryName.equals("Canada"))
         {
-            labelDivision.setText("Province/Territory");
+            division_label.setText("Province/Territory");
         }
 
         else if (countryName.equals("UK"))
         {
-            labelDivision.setText("Country/Province");
+            division_label.setText("Country/Province");
         }
 
     }

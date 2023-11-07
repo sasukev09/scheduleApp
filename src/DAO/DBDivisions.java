@@ -1,7 +1,7 @@
 package DAO;
 
 
-import Helper.DBConnection;
+import Helper.JDBC;
 import Models.Division;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,7 +26,7 @@ public class DBDivisions {
 
         try {
             String sql = "SELECT * FROM first_level_divisions";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -64,7 +64,7 @@ public class DBDivisions {
             String sql = "SELECT * FROM first_level_divisions WHERE Division_ID = " + divisionID;
             String divisionName = "";
             int countryID = 0;
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())

@@ -1,7 +1,7 @@
 package Utility;
 
 
-import Controller.ModifyAppointmentScreenController;
+import Controller.UpdateAppointmentScreenController;
 import Models.Appointment;
 import Models.Customer;
 import javafx.collections.FXCollections;
@@ -175,7 +175,7 @@ public class Tiempo {
         {
             for (Appointment a : customerAppointments)
             {
-                if (a.getAppointmentID() != ModifyAppointmentScreenController.selectedAppointment.getAppointmentID())
+                if (a.getAppointmentID() != UpdateAppointmentScreenController.selectedAppointment.getAppointmentID())
                 {
                     updatedCustomerAppointments.add(a);
                 }

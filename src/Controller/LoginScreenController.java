@@ -23,76 +23,76 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 
 /**
- * This method controls the Login screen of the app.
+ * This method controls the Login initial of the app.
  * This method determines the system default time zone setting, verifies username and password during login, and creates/updates a login activity file.
  */
 public class LoginScreenController implements Initializable {
-
-    Stage stage;
-    Parent scene;
-    public static User authorizedUser;          //   -------  static var to use in createdby updatedby cols
-
 
     /**
      * "Login" label at top of window
      */
     @FXML
-    private Label loginScreenTitle;
+    private Label login_label;
 
     /**
      * Label for Password text field
      */
     @FXML
-    private Label passwordLabel;
+    private Label password_label;
 
     /**
      * Label for Username text field
      */
     @FXML
-    private Label userNameLabel;
+    private Label username_label;
 
     /**
      * The Cancel button on the Login Screen
      */
     @FXML
-    private Button cancelButton;
+    private Button cancel_button;
 
     /**
      * The Login button on the Login screen
      */
     @FXML
-    private Button loginButton;
+    private Button login_button;
 
     /**
      * The password text field in the Login Screen
      */
     @FXML
-    private PasswordField passwordField;
+    private PasswordField password_txtfield;
 
     /**
      * The Username text field in the Login Screen
      */
     @FXML
-    private TextField userNameField;
+    private TextField username_txtfield;
 
     /**
      * Label for "User Location"
      */
     @FXML
-    private Label userLocationLabel;
+    private Label userloc_label;
 
     /**
      * relays user location per system Zone ID
      */
     @FXML
-    private Label userLocationText;
+    private Label location_label;
+
+
+    Stage stage;
+    Parent scene;
+    public static User authorizedUser;
 
     /**
      * This method closes the program.
      * @param event Executes when Cancel button is pressed.
      */
     @FXML
-    void onActionCancel(ActionEvent event) {
+    void onActionCancelButton(ActionEvent event) {
         System.out.println("Cancel Button Pressed");
         System.exit(0);
     }
@@ -105,14 +105,14 @@ public class LoginScreenController implements Initializable {
      * @param event validates login credentials, progresses to either Main Menu or Error Message
      */
     @FXML
-    void onActionLogin(ActionEvent event)
+    void onActionLoginButton(ActionEvent event)
     {
         try
         {
-            System.out.println("Login Button pressed!\n");                                    // test print
+            System.out.println("Login Button pressed!");
 
-            String user_name = userNameField.getText();
-            String password = passwordField.getText();
+            String user_name = username_txtfield.getText();
+            String password = password_txtfield.getText();
 
             ZoneId timeZone = ZoneId.systemDefault();
             String tz = timeZone.toString();
@@ -124,16 +124,17 @@ public class LoginScreenController implements Initializable {
             ResourceBundle rb = ResourceBundle.getBundle("language");
 
             User newUser = DBUsers.getUser(user_name, password);
+            //testing input
+//        System.out.println(user_name + " - " + password);
+//        System.out.println("User ID: " + newUser.getUserID());
+//        System.out.println("User Name: " + newUser.getUserName());
+//        System.out.println("Password: " + newUser.getPassword());
 
-//        System.out.println(user_name + " - " + password);                           // test user_name and password field input
-//        System.out.println("User ID: " + newUser.getUserID());               //
-//        System.out.println("User Name: " + newUser.getUserName());           //
-//        System.out.println("Password: " + newUser.getPassword());            //
-
-            if (newUser.getUserID() == 0)               // -----------------   If invalid login
+            //if login is invalid
+            if (newUser.getUserID() == 0)
             {
-                //   >>---------->   update login_activity.txt   <----------<<
-                String loginUpdate = ("   >>----->   Login attempt by Username '" + user_name + "' DENIED at " + Timestamp.valueOf(LocalDateTime.now()) + " " + tz);
+                // updating login_activity.txt file
+                String loginUpdate = ("Login attempt by the username '" + user_name + "' DENIED at " + Timestamp.valueOf(LocalDateTime.now()) + " " + tz);
                 pwLoginTracker.println(loginUpdate);
                 pwLoginTracker.close();
 
@@ -146,11 +147,11 @@ public class LoginScreenController implements Initializable {
                 alert.show();
             }
 
-            else                                        //  ----------------   else Valid login
+            //valid login if not denied
+            else
             {
-                authorizedUser = newUser;                     //   -------  static var to use in createdby updatedby cols
-
-                //   >>---------->   update login_activity.txt   <----------<<
+                authorizedUser = newUser;
+                //updating login_activity.txt
                 String loginUpdate = ("+ Username '" + user_name + "' SUCCESSFULLY logged in at " + Timestamp.valueOf(LocalDateTime.now()) + " " + tz);
                 pwLoginTracker.println(loginUpdate);
                 pwLoginTracker.close();
@@ -159,35 +160,33 @@ public class LoginScreenController implements Initializable {
                 System.out.println();
 
 
-                //   >>---------->   15 minute appointment check   <----------<<
+                //checking if there is an appointment within 15 mins
                 if (authorizedUser.hasAppointmentSoon() != null)
                 {
-                    Appointment in15 = authorizedUser.hasAppointmentSoon();
+                    Appointment within15 = authorizedUser.hasAppointmentSoon();
 
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("UPCOMING APPOINTMENT");
-                    alert.setContentText("Appointment ID #" + in15.getAppointmentID() + " with "
-                            + in15.getCustomerName(in15.getCustomerID()) + " scheduled to start at "
-                            + in15.getAppointmentStart().toLocalTime() + " on "
-                            + in15.getAppointmentStart().toLocalDate() + ".");
+                    alert.setTitle("WARNING");
+                    alert.setContentText("Appointment ID " + within15.getAppointmentID() + " with "
+                            + within15.getCustomerName(within15.getCustomerID()) + " scheduled to start at "
+                            + within15.getAppointmentStart().toLocalTime() + " on "
+                            + within15.getAppointmentStart().toLocalDate() + ".");
                     alert.showAndWait();
                 }
-
                 else
                 {
                     Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Schedule Update");
+                    alert.setTitle("INFORMATION");
                     alert.setContentText("You have no appointments in the next 15 minutes. You are scheduled for "
                             + authorizedUser.getUserAppointmentList().size() + " appointment(s) total.");
                     alert.showAndWait();
                 }
 
-
-                //   >>---------->   proceed to Main Menu   <----------<<
+                //continuing to main menu
                 stage = (Stage)((Button)event.getSource()).getScene().getWindow();
                 scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
                 stage.setScene(new Scene(scene));
-                stage.centerOnScreen();                 //  ----------------   Center Screen
+                stage.centerOnScreen();
                 stage.show();
             }
         }
@@ -213,7 +212,7 @@ public class LoginScreenController implements Initializable {
     {
         boolean testing = false;
 
-        //   VVVVVV  -----------------   TEST LOGIN TRANSLATION   -----------------------   VVVVVV
+        //testing for the translation
 //        Locale fr = new Locale("fr", "FR");
 //        Scanner scanner = new Scanner(System.in);
 //
@@ -225,37 +224,30 @@ public class LoginScreenController implements Initializable {
 //            Locale.setDefault(fr);
 //            testing = true;
 //        }
-        //   ^^^^^^  ------------------   TEST LOGIN TRANSLATION   -----------------------   ^^^^^^
 
-
-        //   --------------------   Detects timezone and updates User Location Text   -------------
+        //detecting time zone and updates the label that contains the timezone
         ZoneId timeZone = ZoneId.systemDefault();
-        userLocationText.setText(timeZone.toString());
+        userloc_label.setText(timeZone.toString());
 
-        //   ----------------   Get Resource bundle and confirm language w "welcome"   -------------
+        //getting resource bundle and testing
         ResourceBundle rb = ResourceBundle.getBundle("language", Locale.getDefault());
-        System.out.println(rb.getString("welcome"));
+        System.out.println(rb.getString("resource bundle obtained"));
 
-        //   --------------------   set GUI labels/buttons to french here   --------------------------
+        //all GUI components to be translated in french
         if (Locale.getDefault().getLanguage().equals("fr"))
         {
             System.out.println("Language set to French");
-            loginScreenTitle.setText(rb.getString("login"));
-            userNameLabel.setText(rb.getString("username"));
-            passwordLabel.setText(rb.getString("password"));
-            loginButton.setText(rb.getString("login"));
-            cancelButton.setText(rb.getString("cancel"));
-            userLocationLabel.setText(rb.getString("user_location"));
-            userLocationText.setText(timeZone.toString());
+            login_label.setText(rb.getString("login"));
+            username_label.setText(rb.getString("username"));
+            password_label.setText(rb.getString("password"));
+            login_button.setText(rb.getString("login"));
+            cancel_button.setText(rb.getString("cancel"));
+            userloc_label.setText(rb.getString("user_location"));
+            location_label.setText(timeZone.toString());
         }
-
         if ((Locale.getDefault().getLanguage().equals("fr")) && testing)
         {
-            userLocationText.setText("!France (Test)");
+            userloc_label.setText("!France (Test)");
         }
-
-        //   -------------------------------------------------------------------------------
-
-
     }
 }

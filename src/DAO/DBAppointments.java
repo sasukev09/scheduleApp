@@ -2,7 +2,7 @@ package DAO;
 
 
 import Controller.LoginScreenController;
-import Helper.DBConnection;
+import Helper.JDBC;
 import Models.Appointment;
 import Models.ReportByDivision;
 import Models.ReportByMonthType;
@@ -34,7 +34,7 @@ public class DBAppointments {
         try
         {
             String sql = "SELECT * FROM appointments";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next())
@@ -86,7 +86,7 @@ public class DBAppointments {
 
         try
         {
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next())
@@ -125,7 +125,7 @@ public class DBAppointments {
 
         try
         {
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next())
@@ -306,7 +306,7 @@ public class DBAppointments {
 
         // Appointment_ID, Title, Description, Location, Type, Start, End, Create_Date, Created_By, Last_Update, Last_Updated_By, Customer_ID, User_ID, Contact_ID
         String sql = "INSERT INTO appointments VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         // 1 Appointment_ID - NULL
         // 2 Title
@@ -366,7 +366,7 @@ public class DBAppointments {
 
         String sql = ("UPDATE appointments SET Title = ?, Description = ?, Location = ?, Type = ?, Start = ?, End = ?, Last_Update = NOW(), Last_Updated_By = ?, Customer_ID = ?, User_ID = ?, Contact_ID = ? WHERE Appointment_ID = ?");
 
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setString(1, title);
         ps.setString(2, description);
@@ -395,7 +395,7 @@ public class DBAppointments {
     public static void deleteAppointment(int appointmentID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Appointment_ID = ?";
 
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setInt(1, appointmentID);
 
@@ -412,7 +412,7 @@ public class DBAppointments {
     public static void deleteCustomerAppointments(int customerID) throws SQLException {
         String sql = "DELETE FROM appointments WHERE Customer_ID = ?";
 
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setInt(1, customerID);
 

@@ -29,54 +29,54 @@ import java.util.ResourceBundle;
  */
 public class CustomerScreenController implements Initializable {
 
+    @FXML
+    private ComboBox<String> country_cbox;
+
+    @FXML
+    private ComboBox<String> division_cbox;
+
+    @FXML
+    private Button reset_button;
+
+    @FXML
+    private TableColumn<?, ?> customerID_col;
+
+    @FXML
+    private TableColumn<?, ?> name_col;
+
+    @FXML
+    private TableColumn<?, ?> address_col;
+
+    @FXML
+    private TableColumn<?, ?> division_col;
+
+    @FXML
+    private TableColumn<?, ?> country_col;
+
+    @FXML
+    private TableColumn<?, ?> postal_col;
+
+    @FXML
+    private TableColumn<?, ?> phone_col;
+
+    @FXML
+    private TableView<Customer> customer_tableview;
+
+    @FXML
+    private Button back_button;
+
+    @FXML
+    private Button add_button;
+
+    @FXML
+    private Button update_button;
+
+    @FXML
+    private Button delete_button;
+
     Stage stage;
     Parent scene;
     static Customer selectedCustomer;
-
-    @FXML
-    private ComboBox<String> dropDownCountry;
-
-    @FXML
-    private ComboBox<String> dropDownDivision;
-
-    @FXML
-    private Button resetFilterButton;
-
-    @FXML
-    private TableColumn<?, ?> columnCustomerID;
-
-    @FXML
-    private TableColumn<?, ?> columnName;
-
-    @FXML
-    private TableColumn<?, ?> columnAddress;
-
-    @FXML
-    private TableColumn<?, ?> column1stLevelDivision;
-
-    @FXML
-    private TableColumn<?, ?> columnCountry;
-
-    @FXML
-    private TableColumn<?, ?> columnPostalCode;
-
-    @FXML
-    private TableColumn<?, ?> columnPhone;
-
-    @FXML
-    private TableView<Customer> customersTableView;
-
-    @FXML
-    private Button mainMenuButton;
-
-    @FXML
-    private Button addCustomerButton;
-
-    @FXML
-    private Button modifyCustomerButton;
-
-    @FXML
-    private Button deleteCustomerButton;
 
     /**
      * This method gets the user selected customer in the Customer screen.
@@ -93,125 +93,121 @@ public class CustomerScreenController implements Initializable {
      * @throws IOException In the event of an IO exception.
      */
     @FXML
-    void onActionResetFilter(ActionEvent event) throws IOException
+    void onActionResetButton(ActionEvent event) throws IOException
     {
-        System.out.println("Reset filter button pressed");
-
-//        dropDownCountry.getSelectionModel().clearSelection();
-//        dropDownDivision.getSelectionModel().clearSelection();
-
+        System.out.println("Reset button pressed");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/Customers.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
 
     /**
      * This method applies user selected filters to the list displayed in the tableview.
-     * User input values are extracted from dropDownCountry and dropDownDivision comboboxes and utilized in following conditional statements to filter what Customers are displayed in the tableview.
+     * User input values are extracted from country_cbox and division_cbox comboboxes and utilized in following conditional statements to filter what Customers are displayed in the tableview.
      * The table view is updated.
      *
-     * Lambda expressions #1 - populates string list of division names from list of division objects
-     * Lambda expressions #1 - populates string list of country names from list of country objects
+     * Lambda 2 populates string list of division names from list of division objects
+     * Lambda 2 populates string list of country names from list of country objects
      * @param event Executes when the user presses the Apply button.
      */
     @FXML
-    void onActionApplyFilter(ActionEvent event)
+    void onActionApplyCboxes(ActionEvent event)
     {
-        System.out.println("Apply filter button pressed");
+        System.out.println("Combo boxes pressed");
 
-        String countryFilter = dropDownCountry.getValue();
-        String divisionFilter = dropDownDivision.getValue();
+        String filteredCountry = country_cbox.getValue();
+        String filteredDivision = division_cbox.getValue();
 
         ObservableList<Customer> customerList = DBCustomers.getAllCustomers();
         ObservableList<Customer> filteredCustomerList = FXCollections.observableArrayList();
 
 
-        //   -----   if either dropdown has a selection   -----
-        if (!countryFilter.equals("Country") || !divisionFilter.equals("Division"))
+        //checks if either combo box has a selection
+        if (!filteredCountry.equals("Country") || !filteredDivision.equals("Division"))
         {
-            //  -----   if only country drop down is selected   -----
-            if (!countryFilter.equals("Country") && divisionFilter.equals("Division"))
+            //checks if only country_box is selected
+            if (!filteredCountry.equals("Country") && filteredDivision.equals("Division"))
             {
-                System.out.println(countryFilter);          // test
+                System.out.println(filteredCountry);
 
-                //  -----   update dropDownDivision to reflect divisions in selected country   -----
+                //updates division_cbox to reflect divisions in selected country
                 ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
                 ObservableList<String> filteredDivisionNames = FXCollections.observableArrayList();
 
                 for (Division division : allDivisions)
                 {
-                    if (division.getCountryName(division.getCountryID()).equals(countryFilter))
+                    if (division.getCountryName(division.getCountryID()).equals(filteredCountry))
                     {
                         filteredDivisionNames.add(division.getDivisionName());
                     }
                 }
 
-                dropDownDivision.setItems(filteredDivisionNames);
+                division_cbox.setItems(filteredDivisionNames);
 
                 for (Customer customer : customerList)
                 {
-                    if (customer.getCustomerCountry().equals(countryFilter))
+                    if (customer.getCustomerCountry().equals(filteredCountry))
                     {
                         filteredCustomerList.add(customer);
                     }
                 }
             }
 
-            //  -----   if only division drop down is selected   -----
-            else if (countryFilter.equals("Country") && !divisionFilter.equals("Division"))
+            //checks if only division_cbox is selected
+            else if (filteredCountry.equals("Country") && !filteredDivision.equals("Division"))
             {
                 for (Customer customer : customerList)
                 {
-                    if (customer.getDivisionName().equals(divisionFilter))
+                    if (customer.getDivisionName().equals(filteredDivision))
                     {
                         filteredCustomerList.add(customer);
                     }
                 }
             }
 
-            //  -----   if country & division drop down are selected   -----
-            else if (!countryFilter.equals("Country") && !divisionFilter.equals("Division"))
+            //checks if country & division combo boxes are selected
+            else if (!filteredCountry.equals("Country") && !filteredDivision.equals("Division"))
             {
                 for (Customer customer : customerList)
                 {
-                    if (customer.getCustomerCountry().equals(countryFilter) && customer.getDivisionName().equals(divisionFilter))
+                    if (customer.getCustomerCountry().equals(filteredCountry) && customer.getDivisionName().equals(filteredDivision))
                     {
                         filteredCustomerList.add(customer);
                     }
                 }
             }
 
-            //  ------------------------   VVVVV   update tableview   VVVVV   ------------------------
-            //  ------   Creates observable list of string values to populate drop down boxes to filter customer table   ------
+            //updating the tableview
+            //creates observable list of string values to populate combo  boxes to filter customer table
             ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
             ObservableList<String> divisionNames = FXCollections.observableArrayList();
 
             ObservableList<Country> allCountries = DBCountries.getAllCountries();
             ObservableList<String> countryNames = FXCollections.observableArrayList();
 
-            //  --->   LAMBDA expression #1   <---
+            //lambda 1
             allDivisions.forEach(division -> divisionNames.add(division.getDivisionName()));
 
-            //  --->   LAMBDA expression #2   <---
+            //lambda 2
             allCountries.forEach(country -> countryNames.add(country.getCountryName()));
 
-            customersTableView.setItems(filteredCustomerList);
+            customer_tableview.setItems(filteredCustomerList);
 
-            columnCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-            columnName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-            columnAddress.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
-            column1stLevelDivision.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
-            columnCountry.setCellValueFactory(new PropertyValueFactory<>("customerCountry"));
-            columnPostalCode.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
-            columnPhone.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+            customerID_col.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            name_col.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            address_col.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+            division_col.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+            country_col.setCellValueFactory(new PropertyValueFactory<>("customerCountry"));
+            postal_col.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+            phone_col.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
         }
 
+        //if no action is done
         else
         {
-            //   do nothing
             System.out.println("No filter selected");
         }
     }
@@ -223,8 +219,9 @@ public class CustomerScreenController implements Initializable {
      * @throws IOException In the event of an IO error.
      */
     @FXML
-    void onActionMainMenu(ActionEvent event) throws IOException
+    void onActionBackButton(ActionEvent event) throws IOException
     {
+        System.out.println("Back button pressed");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/MainMenu.fxml"));
         stage.setScene(new Scene(scene));
@@ -238,13 +235,12 @@ public class CustomerScreenController implements Initializable {
      * @param event Executes when the user presses the Add button.
      */
     @FXML
-    void onActionAddCustomer(ActionEvent event) throws IOException {
-        System.out.println("Add Customer Button pressed");
-
+    void onActionAddButton(ActionEvent event) throws IOException {
+        System.out.println("Add button pressed");
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/AddCustomer.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
     }
 
@@ -254,10 +250,9 @@ public class CustomerScreenController implements Initializable {
      * @param event Executes when the user presses the Modify button.
      */
     @FXML
-    void onActionModifyCustomer(ActionEvent event) throws IOException {
-        System.out.println("Modify Customer button pressed");
-
-        selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+    void onActionUpdateButton(ActionEvent event) throws IOException {
+        System.out.println("update button pressed");
+        selectedCustomer = customer_tableview.getSelectionModel().getSelectedItem();
 
         if (selectedCustomer == null)
         {
@@ -267,15 +262,13 @@ public class CustomerScreenController implements Initializable {
             alert.showAndWait();
             return;
         }
-
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/Views/ModifyCustomer.fxml"));
         stage.setScene(new Scene(scene));
-        stage.centerOnScreen();                 //  ----------------   Center Screen
+        stage.centerOnScreen();
         stage.show();
 
     }
-
 
     /**
      * This method deletes user selected customer and all appointments associated with the selected customer.
@@ -284,14 +277,14 @@ public class CustomerScreenController implements Initializable {
      * @param event Executes when the user presses the Delete button.
      */
     @FXML
-    void onActionDeleteCustomer(ActionEvent event)
+    void onActionDeleteButton(ActionEvent event)
     {
         System.out.println("Delete Customer button pressed");
-        selectedCustomer = customersTableView.getSelectionModel().getSelectedItem();
+        selectedCustomer = customer_tableview.getSelectionModel().getSelectedItem();
 
         try
         {
-            //  -------------------------------   Check for selection   ---------------------------------------
+            //checking for customer selection
             if (selectedCustomer == null) {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("ERROR");
@@ -300,50 +293,45 @@ public class CustomerScreenController implements Initializable {
                 return;
             }
 
-
-            //  -------------------------------   Confirm delete   ---------------------------------------
-
+            //confirmation alert for delete
             else
             {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-                alert.setTitle("Delete Customer Confirmation");
-                alert.setContentText("Are you sure you want to delete the customer " + selectedCustomer.getCustomerName() + "?");
+                alert.setTitle("Confirmation");
+                alert.setContentText("Are you sure you want to delete customer " + selectedCustomer.getCustomerName() + "?");
                 Optional<ButtonType> result = alert.showAndWait();
 
                 if (result.isPresent() && result.get() == ButtonType.OK)
                 {
                     if (!selectedCustomer.hasAppointments()) {
-                        System.out.println("Customer has no appointments, deleting customer");
+                        System.out.println("This customer has no appointments, deleting customer");
 
                         DBCustomers.deleteCustomer(selectedCustomer.getCustomerID());
 
-                        customersTableView.setItems(DBCustomers.getAllCustomers());
+                        customer_tableview.setItems(DBCustomers.getAllCustomers());
                     }
                     else if (selectedCustomer.hasAppointments())
                     {
-                        System.out.println("Customer has appointments, deleting appointments first, then customer");
+                        System.out.println("This customer has appointments, deleting appointments first, then customer");
 
                         DBAppointments.deleteCustomerAppointments(selectedCustomer.getCustomerID());
                         DBCustomers.deleteCustomer(selectedCustomer.getCustomerID());
 
-                        customersTableView.setItems(DBCustomers.getAllCustomers());
+                        customer_tableview.setItems(DBCustomers.getAllCustomers());
                     }
 
                     Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
                     alert2.setTitle("");
-                    alert2.setContentText("Customer ID #" + selectedCustomer.getCustomerID() +
+                    alert2.setContentText("Customer ID " + selectedCustomer.getCustomerID() +
                             " (" + selectedCustomer.getCustomerName() + ") has been deleted.");
                     alert2.showAndWait();
                     return;
-
-
                 }
-
+                //if action is cancelled
                 else if (result.isPresent() && result.get() != ButtonType.OK)
                 {
                     System.out.println("Deletion cancelled");
                     return;
-
                 }
             }
         }
@@ -356,10 +344,10 @@ public class CustomerScreenController implements Initializable {
 
     /**
      * This method initializes the Customer screen.
-     * Here the comboboxes dropDownCountry, dropDownDivision, and the tableview are populated.
+     * Here the comboboxes country_cbox, division_cbox, and the tableview are populated.
      *
-     * Lambda expression #1 - populates ObservableList with String values of division names
-     * Lambda expression #2 - populates ObservableList with String values of country names
+     * Lambda 1 populates ObservableList with String values of division names
+     * Lambda 2 populates ObservableList with String values of country names
      *
      * @param url the location
      * @param resourceBundle the resources
@@ -369,39 +357,39 @@ public class CustomerScreenController implements Initializable {
     {
         try
         {
-            //  ------   Creates observable list of string values to populate drop down boxes to filter customer table   ------
+            //Creating observable lists of string values to populate combo boxes to filter customer table
             ObservableList<Division> allDivisions = DBDivisions.getAllDivisions();
             ObservableList<String> divisionNames = FXCollections.observableArrayList();
 
             ObservableList<Country> allCountries = DBCountries.getAllCountries();
             ObservableList<String> countryNames = FXCollections.observableArrayList();
 
-            //  --->   LAMBDA expression #1  <---
+            //lambda 1
             allDivisions.forEach(division -> divisionNames.add(division.getDivisionName()));
 
-            //  --->   LAMBDA expression #2  <---
+            //lambda 2
             allCountries.forEach(country -> countryNames.add(country.getCountryName()));
 
 
-            customersTableView.setItems(DBCustomers.getAllCustomers());
+            customer_tableview.setItems(DBCustomers.getAllCustomers());
 
-            columnCustomerID.setCellValueFactory(new PropertyValueFactory<>("customerID"));
-            columnName.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-            columnAddress.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
-            column1stLevelDivision.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
-            columnCountry.setCellValueFactory(new PropertyValueFactory<>("customerCountry"));
-            columnPostalCode.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
-            columnPhone.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
+            customerID_col.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+            name_col.setCellValueFactory(new PropertyValueFactory<>("customerName"));
+            address_col.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+            division_col.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
+            country_col.setCellValueFactory(new PropertyValueFactory<>("customerCountry"));
+            postal_col.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
+            phone_col.setCellValueFactory(new PropertyValueFactory<>("customerPhone"));
 
-            dropDownCountry.setValue("Country");                //   Set dropdown box label
-            dropDownCountry.setItems(countryNames);             //   Populate dropdown box items
-            dropDownCountry.setVisibleRowCount(5);              //   Limit dropdown box row count to 5
+            //setting labels and row counts for the combo boxes
+            country_cbox.setValue("Country");
+            country_cbox.setItems(countryNames);
+            country_cbox.setVisibleRowCount(5);
 
-            dropDownDivision.setValue("Division");              //   Set dropdown box label
-            dropDownDivision.setItems(divisionNames);           //   Populate dropdown box items
-            dropDownDivision.setVisibleRowCount(5);              //   Limit dropdown box row count to 5
+            division_cbox.setValue("Division");
+            division_cbox.setItems(divisionNames);
+            division_cbox.setVisibleRowCount(5);
         }
-
         catch (Exception e)
         {
             e.printStackTrace();

@@ -1,7 +1,7 @@
 package DAO;
 
 
-import Helper.DBConnection;
+import Helper.JDBC;
 import Models.Contact;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +28,7 @@ public class DBContacts {
         {
             String sql = "SELECT * FROM contacts";
 
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next())

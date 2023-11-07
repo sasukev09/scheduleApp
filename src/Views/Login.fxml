@@ -11,13 +11,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="222.0" prefWidth="278.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.LoginScreenController">
    <children>
-      <VBox alignment="CENTER" prefHeight="300.0" prefWidth="400.0" spacing="10.0">
+      <VBox alignment="CENTER" prefHeight="222.0" prefWidth="282.0" spacing="10.0">
          <children>
-            <Label fx:id="loginScreenTitle" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="350.0" text="Login">
+            <Label fx:id="login_label" alignment="CENTER" contentDisplay="CENTER" prefHeight="63.0" prefWidth="117.0" text="Login">
                <font>
-                  <Font name="System Bold" size="24.0" />
+                  <Font size="36.0" />
                </font>
                <padding>
                   <Insets bottom="10.0" />
@@ -25,28 +25,28 @@
             </Label>
             <HBox alignment="CENTER" prefHeight="50.0" prefWidth="400.0">
                <children>
-                  <Label fx:id="userNameLabel" prefHeight="30.0" prefWidth="150.0" text="Username:">
+                  <Label fx:id="username_label" prefHeight="27.0" prefWidth="77.0" text="Username:">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <TextField fx:id="userNameField" prefWidth="150.0" />
+                  <TextField fx:id="username_txtfield" prefWidth="150.0" />
                </children>
             </HBox>
             <HBox alignment="CENTER" layoutX="10.0" layoutY="130.0" prefHeight="50.0" prefWidth="400.0">
                <children>
-                  <Label fx:id="passwordLabel" prefHeight="30.0" prefWidth="150.0" text="Password:">
+                  <Label fx:id="password_label" prefHeight="27.0" prefWidth="80.0" text="Password:">
                      <font>
-                        <Font size="18.0" />
+                        <Font size="14.0" />
                      </font>
                   </Label>
-                  <PasswordField fx:id="passwordField" prefWidth="150.0" />
+                  <PasswordField fx:id="password_txtfield" prefWidth="150.0" />
                </children>
             </HBox>
-            <ButtonBar maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="40.0" prefWidth="180.0">
+            <ButtonBar maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="45.0" prefWidth="145.0">
               <buttons>
-                <Button fx:id="loginButton" mnemonicParsing="false" onAction="#onActionLogin" text="Login" />
-                  <Button fx:id="cancelButton" layoutX="335.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionCancel" text="Cancel" />
+                <Button fx:id="login_button" mnemonicParsing="false" onAction="#onActionLoginButton" text="Login" />
+                  <Button fx:id="cancel_button" layoutX="335.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionCancelButton" text="Cancel" />
               </buttons>
                <padding>
                   <Insets right="20.0" top="20.0" />
@@ -54,12 +54,12 @@
             </ButtonBar>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0" spacing="10.0">
                <children>
-                  <Label fx:id="userLocationLabel" alignment="CENTER_RIGHT" contentDisplay="TOP" prefHeight="30.0" prefWidth="180.0" text="User Location:">
+                  <Label fx:id="userloc_label" alignment="CENTER_RIGHT" contentDisplay="TOP" prefHeight="30.0" prefWidth="180.0" text="User Location:">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Label fx:id="userLocationText" prefHeight="30.0" prefWidth="180.0" text="Location">
+                  <Label fx:id="location_label" prefHeight="30.0" prefWidth="180.0" text="Location">
                      <font>
                         <Font size="14.0" />
                      </font>

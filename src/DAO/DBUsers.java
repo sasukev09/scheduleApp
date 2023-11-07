@@ -1,8 +1,7 @@
 package DAO;
 
 
-import Helper.DBConnection;
-import Models.Country;
+import Helper.JDBC;
 import Models.User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -28,7 +27,7 @@ public class DBUsers {
         try
         {
             String sql = "SELECT * FROM users";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ResultSet rs = ps.executeQuery();
 
@@ -69,7 +68,7 @@ public class DBUsers {
             String userName = "";
             String passWord = "";
             String sql = "SELECT * FROM users WHERE User_Name = '" + username + "' AND Password = '" + userPassword + "'";       // WATCH OUT FOR THE SINGLE QUOTES
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             if (rs.next())

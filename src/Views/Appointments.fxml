@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AppointmentScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.AppointmentScreenController">
    <children>
-      <VBox alignment="CENTER" layoutY="-2.0" prefHeight="600.0" prefWidth="800.0" spacing="10.0">
+      <VBox alignment="CENTER" layoutY="-2.0" prefHeight="485.0" prefWidth="800.0" spacing="10.0">
          <children>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
@@ -27,40 +27,40 @@
             </HBox>
             <HBox alignment="CENTER" layoutX="20.0" layoutY="520.0" prefHeight="40.0" prefWidth="800.0" spacing="10.0">
                <children>
-                  <Label minWidth="30.0" prefHeight="30.0" prefWidth="62.0" text="Showing" />
-                  <ComboBox fx:id="dropDownTime" prefWidth="170.0" promptText="All" />
-                  <Label minWidth="50.0" prefHeight="30.0" prefWidth="128.0" text="Appointments for" />
-                  <ComboBox fx:id="dropDownContact" prefWidth="170.0" promptText="All Contacts" />
-                  <ButtonBar prefHeight="35.0" prefWidth="265.0">
+                  <Label minWidth="30.0" prefHeight="30.0" prefWidth="48.0" text="Showing" />
+                  <ComboBox fx:id="time_cbox" prefWidth="170.0" promptText="All" />
+                  <Label minWidth="50.0" prefHeight="30.0" prefWidth="97.0" text="Appointments for" />
+                  <ComboBox fx:id="contact_cbox" prefWidth="170.0" promptText="All Contacts" />
+                  <ButtonBar prefHeight="40.0" prefWidth="159.0">
                     <buttons>
-                        <Button fx:id="applyButton" mnemonicParsing="false" onAction="#onActionApplyFilters" prefWidth="100.0" text="Apply" />
-                        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#onActionResetFilter" prefWidth="100.0" text="Reset" />
+                        <Button fx:id="apply_Button" mnemonicParsing="false" onAction="#onActionApplyButton" prefWidth="100.0" text="Apply" />
+                        <Button fx:id="resetButton" mnemonicParsing="false" onAction="#onActionResetButton" prefWidth="100.0" text="Reset" />
                     </buttons>
                   </ButtonBar>
                </children>
             </HBox>
-            <TableView fx:id="appointmentTableView" prefHeight="450.0" prefWidth="780.0">
+            <TableView fx:id="appointment_TableView" prefHeight="312.0" prefWidth="780.0">
               <columns>
-                <TableColumn fx:id="columnAppointmentID" prefWidth="100.0" text="Appointment ID" />
-                <TableColumn fx:id="columnTitle" prefWidth="70.0" text="Title" />
-                  <TableColumn fx:id="columnDescription" prefWidth="78.0" text="Description" />
-                  <TableColumn fx:id="columnLocation" prefWidth="78.0" text="Location" />
-                  <TableColumn fx:id="columnType" prefWidth="78.0" text="Type" />
-                  <TableColumn fx:id="columnContact" prefWidth="60.0" text="Contact" />
-                  <TableColumn fx:id="columnStart" prefWidth="100.0" text="Start" />
-                  <TableColumn fx:id="columnEnd" prefWidth="100.0" text="End" />
-                  <TableColumn fx:id="columnCustomer" prefWidth="65.0" text="Customer" />
-                  <TableColumn fx:id="columnUser" prefWidth="50.0" text="User" />
+                <TableColumn fx:id="AppointmentID_col" prefWidth="100.0" text="Appointment ID" />
+                <TableColumn fx:id="title_col" prefWidth="70.0" text="Title" />
+                  <TableColumn fx:id="description_col" prefWidth="78.0" text="Description" />
+                  <TableColumn fx:id="location_col" prefWidth="78.0" text="Location" />
+                  <TableColumn fx:id="type_col" prefWidth="78.0" text="Type" />
+                  <TableColumn fx:id="contact_Column" prefWidth="60.0" text="Contact" />
+                  <TableColumn fx:id="start_column" prefWidth="100.0" text="Start" />
+                  <TableColumn fx:id="end_Col" prefWidth="100.0" text="End" />
+                  <TableColumn fx:id="customer_Column" prefWidth="65.0" text="Customer" />
+                  <TableColumn fx:id="user_Col" prefWidth="50.0" text="User" />
               </columns>
             </TableView>
             <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="300.0">
                <children>
                 <Button fx:id="back_button" mnemonicParsing="false" onAction="#onActionBackButton" prefHeight="30.0" prefWidth="110.0" text="Back" />
-                  <ButtonBar layoutX="90.0" layoutY="10.0" prefHeight="35.0" prefWidth="680.0">
+                  <ButtonBar layoutX="90.0" layoutY="10.0" prefHeight="40.0" prefWidth="438.0">
                      <buttons>
-                        <Button fx:id="addAppointmentButton" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionAddAppointment" prefWidth="100.0" text="Add" />
-                        <Button fx:id="modifyAppointmentButton" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionModifyAppointment" prefWidth="100.0" text="Modify" />
-                        <Button fx:id="deleteAppointmentButton" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionDeleteAppointment" prefWidth="100.0" text="Delete" />
+                        <Button fx:id="add_Button" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionAddButton" prefWidth="100.0" text="Add" />
+                        <Button fx:id="update_button" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionUpdateButton" prefWidth="100.0" text="Update" />
+                        <Button fx:id="delete_button" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionDeleteButton" prefWidth="100.0" text="Delete" />
                      </buttons>
                   </ButtonBar>
                </children>

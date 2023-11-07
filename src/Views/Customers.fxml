@@ -12,63 +12,63 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CustomerScreenController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="493.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.CustomerScreenController">
    <children>
-      <VBox alignment="CENTER" layoutY="-2.0" prefHeight="600.0" prefWidth="800.0" spacing="10.0">
+      <VBox alignment="CENTER" layoutY="-2.0" prefHeight="492.0" prefWidth="800.0" spacing="10.0">
          <children>
             <HBox alignment="CENTER" prefHeight="30.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="309.0" text="All Customers">
+                  <Label alignment="CENTER" prefHeight="30.0" prefWidth="309.0" text="Customers">
                      <font>
-                        <Font name="System Bold" size="24.0" />
+                        <Font size="24.0" />
                      </font>
                   </Label>
                </children>
             </HBox>
-            <TableView fx:id="customersTableView" prefHeight="450.0" prefWidth="800.0">
-              <columns>
-                <TableColumn fx:id="columnCustomerID" text="Customer ID" />
-                <TableColumn fx:id="columnName" prefWidth="130.0" text="Name" />
-                  <TableColumn fx:id="columnAddress" prefWidth="180.0" text="Address" />
-                  <TableColumn fx:id="column1stLevelDivision" prefWidth="110.0" text="1st Level Division" />
-                  <TableColumn fx:id="columnCountry" prefWidth="90.0" text="Country" />
-                  <TableColumn fx:id="columnPostalCode" text="Postal Code" />
-                  <TableColumn fx:id="columnPhone" prefWidth="100.0" text="Phone Number" />
-              </columns>
-            </TableView>
             <HBox alignment="CENTER" prefHeight="40.0" prefWidth="750.0" spacing="25.0">
                <children>
-                  <ButtonBar prefHeight="30.0" prefWidth="400.0">
+                  <ButtonBar prefHeight="36.0" prefWidth="248.0">
                      <buttons>
-                        <Label text="Filter by" />
-                        <ComboBox fx:id="dropDownCountry" onAction="#onActionApplyFilter" prefWidth="180.0" />
+                        <Label minWidth="63.0" prefHeight="17.0" text="Filter by" />
+                        <ComboBox fx:id="country_cbox" onAction="#onActionApplyCboxes" opacity="0.58" prefWidth="180.0" />
                      </buttons>
                   </ButtonBar>
-                  <ButtonBar layoutX="43.0" layoutY="10.0" prefHeight="30.0" prefWidth="400.0">
+                  <ButtonBar layoutX="43.0" layoutY="10.0" prefHeight="37.0" prefWidth="204.0">
                      <buttons>
-                        <Label prefWidth="70.0" text="Filter by" />
-                        <ComboBox fx:id="dropDownDivision" onAction="#onActionApplyFilter" prefWidth="180.0" />
+                        <Label minWidth="43.0" prefHeight="17.0" prefWidth="70.0" text="Filter by" />
+                        <ComboBox fx:id="division_cbox" onAction="#onActionApplyCboxes" opacity="0.59" prefWidth="180.0" />
                      </buttons>
                   </ButtonBar>
-                  <ButtonBar buttonMinWidth="100.0" prefHeight="40.0" prefWidth="290.0">
+                  <ButtonBar buttonMinWidth="100.0" prefHeight="36.0" prefWidth="1.0">
                     <buttons>
-                        <Button fx:id="resetFilterButton" mnemonicParsing="false" onAction="#onActionResetFilter" prefWidth="100.0" text="Reset Filters" />
+                        <Button fx:id="reset_button" mnemonicParsing="false" onAction="#onActionResetButton" prefWidth="100.0" text="Reset" />
                     </buttons>
                   </ButtonBar>
                </children>
             </HBox>
+            <TableView fx:id="customer_tableview" prefHeight="336.0" prefWidth="713.0">
+              <columns>
+                <TableColumn fx:id="customerID_col" text="Customer ID" />
+                <TableColumn fx:id="name_col" prefWidth="130.0" text="Name" />
+                  <TableColumn fx:id="address_col" prefWidth="180.0" text="Address" />
+                  <TableColumn fx:id="division_col" prefWidth="110.0" text="Divison" />
+                  <TableColumn fx:id="country_col" prefWidth="90.0" text="Country" />
+                  <TableColumn fx:id="postal_col" text="Postal Code" />
+                  <TableColumn fx:id="phone_col" prefWidth="100.0" text="Phone Number" />
+              </columns>
+            </TableView>
             <HBox prefHeight="40.0" prefWidth="300.0">
                <children>
                   <ButtonBar prefHeight="40.0" prefWidth="100.0">
                      <buttons>
-                      <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#onActionMainMenu" prefWidth="100.0" text="Main Menu" />
+                      <Button fx:id="back_button" mnemonicParsing="false" onAction="#onActionBackButton" prefWidth="100.0" text="Back" />
                      </buttons>
                   </ButtonBar>
-                  <ButtonBar layoutX="90.0" layoutY="10.0" prefHeight="35.0" prefWidth="680.0">
+                  <ButtonBar layoutX="90.0" layoutY="10.0" prefHeight="27.0" prefWidth="446.0">
                      <buttons>
-                        <Button fx:id="addCustomerButton" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionAddCustomer" prefWidth="100.0" text="Add" />
-                        <Button fx:id="modifyCustomerButton" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionModifyCustomer" prefWidth="100.0" text="Modify" />
-                        <Button fx:id="deleteCustomerButton" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionDeleteCustomer" prefWidth="100.0" text="Delete" />
+                        <Button fx:id="add_button" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionAddButton" prefWidth="100.0" text="Add" />
+                        <Button fx:id="update_button" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionUpdateButton" prefWidth="100.0" text="Update" />
+                        <Button fx:id="delete_button" layoutX="735.0" layoutY="18.0" mnemonicParsing="false" onAction="#onActionDeleteButton" prefWidth="100.0" text="Delete" />
                      </buttons>
                   </ButtonBar>
                </children>

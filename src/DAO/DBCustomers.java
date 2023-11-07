@@ -1,7 +1,7 @@
 package DAO;
 
 
-import Helper.DBConnection;
+import Helper.JDBC;
 import Models.Customer;
 import Models.Division;
 import Controller.LoginScreenController;        //   -------  static var authorizedUser to use in Created_by Last_updated_by cols
@@ -31,7 +31,7 @@ public class DBCustomers {
         try
         {
             String sql = "SELECT * FROM customers";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
 
             while (rs.next())
@@ -71,7 +71,7 @@ public class DBCustomers {
         try
         {
             String sql = "SELECT * FROM customers WHERE Customer_ID = ?";
-            PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+            PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
             ps.setInt(1, customer_ID);
 
@@ -129,7 +129,7 @@ public class DBCustomers {
 //        String sql = "INSERT INTO customers VALUES (NULL, '" + customerName + "', '" + customerAddress + "', '" + postalCode + "', '" + phone + "', NOW(), 'TEST', NOW(), 'TEST', " + divisionID + ")";
         String sql = "INSERT INTO customers VALUES (NULL, ?, ?, ?, ?, NOW(), ?, NOW(), ?, ?)";
 
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setString(1, customerName);
         ps.setString(2, customerAddress);
@@ -165,7 +165,7 @@ public class DBCustomers {
 
         String sql = ("UPDATE customers SET Customer_Name = ?, Address = ?, Postal_Code = ?, Phone = ?, Last_Update = NOW(), Last_Updated_By = ?, Division_ID = ? WHERE Customer_ID = ?");
 
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setString(1, name);
         ps.setString(2, address);
@@ -192,7 +192,7 @@ public class DBCustomers {
     public static void deleteCustomer(int customerID) throws SQLException {
         String sql = "DELETE FROM customers WHERE Customer_ID = ?";
 
-        PreparedStatement ps = DBConnection.getConnection().prepareStatement(sql);
+        PreparedStatement ps = JDBC.getConnection().prepareStatement(sql);
 
         ps.setInt(1, customerID);
 
