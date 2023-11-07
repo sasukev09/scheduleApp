@@ -8,7 +8,9 @@ import Helper.JDBC;
 import java.io.IOException;
 
 /**
- * This is the Main class of the app.
+ * @author Kevin Salazar
+ *
+ * This is the Main class of the application.
  * The application is designed to enable the user to add, modify, and delete customer appointments for contacts.
  */
 public class Main extends Application {
