@@ -19,10 +19,10 @@
                   <Insets bottom="10.0" />
                </padding>
             </Label>
-            <Button fx:id="appointments_button" mnemonicParsing="false" onAction="#onActionAppointmentButton" prefWidth="100.0" text="Appointments" />
-            <Button fx:id="customers_button" layoutX="384.0" layoutY="238.0" mnemonicParsing="false" onAction="#onActionCustomersButton" prefWidth="100.0" text="Customers" />
-            <Button fx:id="reports_button" layoutX="384.0" layoutY="430.0" mnemonicParsing="false" onAction="#onActionReportsButton" prefWidth="100.0" text="Reports" />
-            <Button fx:id="exit_button" mnemonicParsing="false" onAction="#onActionExitButton" text="Exit">
+            <Button fx:id="appointments_button" mnemonicParsing="false"  prefWidth="100.0" text="Appointments" />
+            <Button fx:id="customers_button" layoutX="384.0" layoutY="238.0" mnemonicParsing="false" prefWidth="100.0" text="Customers" />
+            <Button fx:id="reports_button" layoutX="384.0" layoutY="430.0" mnemonicParsing="false"  prefWidth="100.0" text="Reports" />
+            <Button fx:id="exit_button" mnemonicParsing="false"  text="Exit">
                <VBox.margin>
                   <Insets top="20.0" />
                </VBox.margin>

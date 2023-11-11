@@ -109,7 +109,7 @@ public class CustomerScreenController implements Initializable {
      * User input values are extracted from country_cbox and division_cbox comboboxes and utilized in following conditional statements to filter what Customers are displayed in the tableview.
      * The table view is updated.
      *
-     * Lambda 2 populates string list of division names from list of division objects
+     * Lambda 1 populates string list of division names from list of division objects
      * Lambda 2 populates string list of country names from list of country objects
      * @param event Executes when the user presses the Apply button.
      */

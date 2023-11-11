@@ -90,3 +90,12 @@ user: test successfully logged in at: 2023-11-04 15:13:20.720246
 + Username 'test' SUCCESSFULLY logged in at 2023-11-07 02:00:30.8796412 America/Chicago
 + Username 'test' SUCCESSFULLY logged in at 2023-11-07 02:00:45.0850648 America/Chicago
 + Username 'test' SUCCESSFULLY logged in at 2023-11-07 13:20:52.9983863 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-07 13:54:52.7319221 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 12:36:29.2546715 America/Chicago
++ Username 'TEST' SUCCESSFULLY logged in at 2023-11-11 13:26:34.4531821 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 13:28:02.8853742 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 13:28:50.1493598 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 14:37:57.6220521 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 14:49:28.6524451 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 14:50:09.2794488 America/Chicago
++ Username 'test' SUCCESSFULLY logged in at 2023-11-11 14:54:23.2940546 America/Chicago
