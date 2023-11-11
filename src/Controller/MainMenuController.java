@@ -110,7 +110,7 @@ public class MainMenuController implements Initializable {
 //    }
 
     /**
-     * This method initializes the Main Menu screen.
+     * This method initializes the Main Menu screen. Lamba expressions to facilitate button action were added.
      * @param url the location
      * @param resourceBundle the resources
      * Lambda 1 constructs the body of the action event for the appointments button, without the necessity of setting up an action event on SceneBuilder or on the fxml file
